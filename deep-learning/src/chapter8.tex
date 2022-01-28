@@ -1,0 +1,68 @@
+\section*{Chapter 8: Optimization}
+%\section*{Probabilities}
+%\subsection*{Expect, Var, Cov, Bay}
+%$\E[X]=\int_{\Omega}xf(x)\di x=\int_{\omega}x\Prob[X{=}x]\di x$ \\
+\subsection*{Objectives}
+\textbf{Squared loss:} $l_{y}(\nu) = \frac{1}{2} \|y-\nu\|^2 $. Assumes isotropic Gaussian noise for outputs. Do not need output activation ($\nu = z$). $\partial l_y(\nu) = \nu - y$. 
+
+\textbf{Zero-one loss:} $l_{y}(\nu) = 0 \text{ if } \nu=y \text{ else } 1$. The output unit can be seen as a max-unit on top of linear scores: $\nu = \argmax_j{z_j}$. Problem: lacks gradient info -> hard to optimize. Used to evalulate accuracy.
+
+To avoid optimizing the zero-one loss, use surrogates. Usually, $z$ is turned into class probs using $\nu = \sigma^{max}(z)$.
+
+\textbf{Binary cross-entropy: } $l_{y}(z)=-y\cdot \ln{\sigma(z)} - (1-y)\cdot \ln{1-\sigma(z)}$. $\equiv$ to max the log-likelihood.
+
+\textbf{For m classes: } $l_{y}(z)=-\ln{\sigma_{y}^{max}(z)} = -z{y} + \ln({\sum_{j=1}^m \exp{[z_j]}})$. If soft targets: $l_{y}(z)=-\sum_{j=1}^m y_j\ln(\sigma_j^{max}(z)))$
+
+\textbf{Hinge loss: } $l_y(z) = \max\{0, 1-yz\} = (1-yz)_+$
+
+\subsection*{Probabilistic Loss Functions}
+We can defined loss functions when models make probabilistic predictions. Assume prob. model over $\mathcal{Y}$ with parameter $\nu$.
+
+\textbf{Log-likelihood loss: } $l_y(\nu) = -\log p(y;\nu)$
+
+\textbf{Gaussian model: } $l_y(\nu) = \frac{1}{2}\|y-\nu\|^2 + const$
+
+\textbf{Exponential model: } $l_y(\nu) = -y\cdot\nu + \psi(\nu) + const$
+
+\textbf{Poisson model: } $l_y(\nu) = \nu - y\log\nu + const$
+
+\subsection*{Gradient Descent}
+True risk $R(\theta)=\mathbb{E}_p[l_y(F(x;\theta))]$ is estimated by empirical risk $R_s(\theta)=\frac{1}{s}\sum_{t=1}^s l_{y^{t}}(F(x^t;\theta))$
+
+\textbf{Update iteration: } $\theta^{k+1} = \theta^k - \alpha\nabla f(\theta^k)$
+
+\textbf{Gradient flow: } $\dot{x} = -\nabla f(x)$. We can think of the update interation as numerical integration of the gradient flow: ideal trajectory to be approximated by GD. As $\alpha$ gets smaller, we get closer to it.
+
+\textbf{Convergence Theorem:} for a $\mu$-strongly convex, L-smooth function $f$, the gradient iterates $\theta^k$ with $\alpha\leq\frac{1}{L}$ converge to the unique minimizer $\theta^{*}$ at rate $\|\theta^k - \theta^{*}\|^2 \leq (1-\alpha\mu)^k\|\theta^0 - \theta^{*}\|^2$. For non-convex case we can prove conv. to an $\epsilon$-stationary point where $\|\nabla f(x)\| \leq \epsilon$
+
+\textbf{Thm:} Let $f$ be convex, diff. and L-smooth. Then, with $\alpha\leq\frac{1}{L}$, the suboptimality along GD iterates decays like: $f(\theta^k) - f(\theta^*) \leq \frac{1}{2\nu k}\|x^0-x^*\|^2$ -> Cannot ensure conv to $\theta^*$ but bound optimality.
+
+\subsection*{Stochastic Gradient Descent}
+$\theta^{k+1} = \theta^k - \alpha_{k}\nabla f_{I(k)}(\theta^k), I(k) \sim Unif\{1,...,k\}$
+
+To reduce variance, use minibatches: $\theta^{k+1} = \theta^k - \alpha_{k} \cdot \frac{1}{|S_k|}\sum_{j\in S_k}\nabla f_{j}(\theta^k)$
+
+\subsection*{Constant learning rate}
+The schedule $\alpha_k \propto 1/k$ is good in theory but slow convergence. Constant $\alpha$ can work. A small enough constant $\alpha$ can get arbitrary close to the optimum.
+
+\subsection*{Momentum and Adaptivity}
+\textbf{Nesterov's Accelerated Method: } $y^{k+1}=\theta^k + \beta(\theta^{k}-\theta^{k-1})$, $\theta^{k+1} = y^{k+1}-\alpha\nabla f(y^{k+1})$
+\textbf{Heavy Ball (GD with mom): }$\theta^{k+1} = \theta^{k} - \alpha\nabla fx^k + \beta (x^k - x^{k-1})$, $\beta\in(0,1)$
+
+\textbf{AdaGrad}. Adapt $\alpha$ per parameter or direction.
+
+$\gamma^k = \eta\gamma^{k-1} + (1-\eta)[\nabla f(x^k) \odot \nabla f(x^k)]$
+
+$x^{k+1} = x^k - \alpha\Lambda^k\nabla f(x^k)$ where
+
+$\Lambda^k = diag(\lambda_i^k)$ with $\lambda_i^k = \frac{1}{\sqrt{\gamma_i^k} + \delta}, \delta>0$
+
+Each $\gamma_i^k$ is the sum of the squares of the i-th parameters partial derivatives along the iterates $x^0, ..., x^k$
+
+\textbf{Adam}. $\alpha$ is adapted per parameter as in AdaGrad but includes momentum term by exponentially decaying mean over the gradient history.
+
+$\theta^{k+1} = \theta^k - \frac{\alpha}{1-\beta^k}m^k$ where $m^k = \beta m^{k-1} + (1-\beta)\nabla f(x^k)$ with $\beta\in[0,1]$ and $m^0=0$.
+$(1-\beta^k)$ is a bias correction. $\alpha$ is computed as in AdaGrad.
+
+\textbf{Compressed Stochastic Gradients.} Reduce computational and communication complexity. Simple approach \textbf{signSGD}:
+$\theta^{k+1}=\theta^{k}-\alpha_ksign(\nabla f_{I(k)(x^k)})$ -> Biased estimate of gradient but still may work.

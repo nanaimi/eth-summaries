@@ -1,0 +1,26 @@
+\section*{Chapter 12: Regularization and Augmentation}
+%\section*{Probabilities}
+%\subsection*{Expect, Var, Cov, Bay}
+%$\E[X]=\int_{\Omega}xf(x)\di x=\int_{\omega}x\Prob[X{=}x]\di x$ \\
+Regularization: aspect used to lower generalization error but not training error.
+
+\textbf{Norm-based regularization}. Encode prior knowledge in the optimization; e.g. weights should be small: $R_\Omega(\theta; S) = R(\theta; S) + \Omega(\theta)$. First term is risk and second regularizer on $\theta$. Example 
+$\Omega(\theta) = \frac{1}{2}\sum_{l=1}^{L}\mu^l\|\theta^l\|_p^2$
+
+\textbf{Weigth Decay}. L2-reg on weights. 
+
+$\nabla\Omega = \mu\theta$ or $\frac{\partial\Omega}{\partial\theta_{ij}^l} = \mu\theta_{ij}^l$
+
+GD becomes: $\theta^{k+1} = ((1-\mu\eta)\theta^k - \eta \nabla R(\theta^k))$
+
+\textbf{Early stopping}. Keep best set of weights during training based on val error.
+
+\textbf{Ensemble Methods: bagging}. Comibne models trained on bootstrap samples. In practice, many duplicates and we sample $2/3$ of the data. At inference time, (weighted) average of all model outputs. Always beneficial but expensive.
+
+\textbf{Knowledge distillation}. Given an accurate and complex model, train a target model which is cheaper but replicates it. To do that train the target model on training data + data labelled by the complex model. Allows to use even more data.
+
+\textbf{Dropout}. Drop units in network with prob $p$. We avoid unique paths to get solutions. We can interpret dropout as building ensemble of different NN. We can use \emph{Weight rescaling} and scale weights by prob of being active: $\Tilde{\theta}_{ij} \leftarrow \pi_j^{l-1}\theta_{ij}^l$
+
+\textbf{Data augmentation}. Enrich data with prior knowledge. We define transformations $\tau$ and apply them to each training sample: $(x, y) \mapsto (\tau(x), y)$. Also, can inject noise during training in inputs, weights or targets.
+
+\textbf{Task augmentation}. Pre-train parts of the model on generic task. In \emph{self-supervised} learning, build aux tasks that allow to train models on unlabelled data. In \emph{Semi-supervised}, define a generative model w/ log-likelihood and optimize additive combination of supervised and unsupervised risk while sharing parameters.

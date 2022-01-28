@@ -1,0 +1,79 @@
+\section*{Chapter 13: Theory of DNNs}
+
+\textbf{Setting}:
+$P$ over $\mathcal X\times\mathcal Y$,
+hypothesis class $\mathcal F$,
+true risk: $\mathcal R(f):=\mathbb E[\mathds{1}_{\{f(\mathbf x)\neq y\}}]$,
+empirical risk: $\mathcal R_n(f)=\frac 1 n \sum_{i=1}^n \mathds{1}_{f(\mathbf x_i\neq y_i)}$,
+true risk minimizer $f^*$,
+empirical risk minimizer $f_n$,
+$\mathcal R(f^*)\leq \mathcal R(f_n)$,
+$\mathcal R_n(f_n)\leq \mathcal R_n(f^*)$
+
+We represent bounds as: $\mathbb P(R(f) \leq R_n(f) + \text{Complexity term}) \geq (1-\delta) \to$ Probabilistic because $R_n(\cdot)$ depends on random draws.
+
+\textbf{Hoeffding's inequality}: $Z_i\in [a, b]$ i.i.d.
+
+$\mathbb P
+\left[
+    \left|
+        \frac 1 n \sum_{i=1}^n
+            Z_i - \mathbb E[Z]
+    \right|
+    > \epsilon
+\right]
+< 2 \exp
+    \left(
+        -\frac
+            {2n\epsilon^2}
+            {(b-a)^2}
+    \right)
+$
+
+Intuition: prob of having large deviations between true and empirical mean is bounded. The more data, the closer we might expect to be. 
+
+\textbf{Union bound}:
+$
+\mathbb P[C_1\bigcup ... \bigcup C_N] \leq
+\sum_{i=1}^N \mathbb P [C_i]
+$
+
+The prob of union of events is larger than sum of their probs.
+
+\textbf{Scattering coefficient}:
+$
+\mathcal S_{\mathcal F} := \sup_{(\mathbf x_1, ..., \mathbf x_n)}
+\left|
+    \{
+        (f(\mathbf x_1), ..., f(\mathbf x_n)) : f\in\mathcal F
+    \}
+\right|
+$
+
+Intuition: how many diff functions of the data can my function class represent?
+
+\textbf{Shatter}: if $\mathcal S_{\mathcal F}(n) = 2^n$ then $\mathcal F$ shatters set.
+
+If for a fixed n, we can classify data points in all the possible ways ($2^n$), then $\mathcal F$ shatters the set.
+
+\textbf{VC dimension}: largest $n$ for which $\mathcal S_{\mathcal F}(n) = 2^n$;
+VC dim of linear classifier in 2d: 3;
+VC dimension of binary linear classifier with $d$ weights: $d+1$
+
+If VC dim is $n^*$, $S_{\mathcal F}(n)$ grows sub-exponentially with $n$ when $n>n^*\to$ VC dim grows sub-linearly.
+
+Conclusion: finiteness of the VC dim ensures that emp. risk converges uniformly over $\mathccal$
+
+\textbf{Symmetrization lemma}:
+
+\textbf{Sauer's lemma}: for a function class $\mathcal F$ with VC-dim($\mathcal F$) $\leq d$ and $n>d$, then: $\mathcal S_{\mathcal F}(n) \leq (\frac{en}{d})^d$
+
+\textbf{Thm}: the VC-dim of a binary linear classifier (perceptron) with d weights and 1 bias term is: $d+1$.
+
+\textbf{Puzzling capacity of NN}
+
+NN are powerful function approximators.
+
+- When incresing hidden units, train error goes to 0 but there's no overfitting because test error also keeps decreasing.
+
+- No matter what we use as data, training goes to 0 as hidden units increase. They can even fit random labels (no generalization).

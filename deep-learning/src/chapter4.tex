@@ -1,0 +1,52 @@
+\section*{Chapter 4: Sigmoid Networks}
+
+\subsection*{Ridge Function}
+
+$f(\mathbf x;\bm{\theta})=\phi(\mathbf x \cdot\bm \theta)$ where $\phi$ is non-linear.
+
+Preserve level sets and directional sensitivity of linear funct. but rate of change is no longer const.
+
+\textbf{Threshold unit:} Heavyside or sign function
+
+\textbf{Sigmoid units}
+
+$\sigma(\mathbf x\cdot\bm\theta)=\frac{1}{1+\exp[-\mathbf x \cdot\bm\theta]}$
+
+$\sigma(-z) = 1-\sigma(z)$
+
+$\sigma'(z)=\sigma(z)(1-\sigma(z))=\sigma(z)\sigma(-z)$
+
+$\tanh(z)=\frac{\exp(z)-\exp(-z)}{\exp(z)+\exp(-z)} = 2\sigma(2z) - 1$
+
+$\tanh'(z)=1-\tanh^2(z)$
+
+$\sigma_i^{max}(\x; \Theta) = \frac{\exp{[x\cdot\theta_i]}}{\sum_{j=1}^k\exp[x\cdot\theta_j]}$
+\subsection*{Logistic Regression}
+
+KL-divergence: $D_{KL}(y\|\hat y) = \sum y_i\log\frac {y_i} {\hat y_i}$
+
+entropy: $H(y) = -\sum y_i\log y_i$
+
+cross-entropy: $H(y, \hat y) = -\sum y_i\log\hat y_i$
+
+cross-entropy loss: $\ell(\mathbf x, y;\bm \theta)$
+
+$=-\ln\sigma(y\mathbf x\cdot\bm\theta)$ if $y \in\{-1, 1\}$
+
+$=-y\ln\sigma(\mathbf x\cdot\bm\theta) - (1-y)\ln(1-\sigma(\mathbf x \cdot \bm \theta))$ if $y \in\{0, 1\}$
+
+(with softmax) $=-y\cdot \ln\sigma^{max}(x;\theta)$
+
+logistic SGD: $\nabla_{\bm\theta}\ell(\mathbf x, y) = \sigma(-y\mathbf x\cdot\bm\theta)y\mathbf x$
+
+$\nabla$CE with $\sigma^{max}$: $\nabla_{\theta_i}l(x,y;\theta) = (\sigma_i^{max}(x)-y_i)x$ 
+
+\subsection*{MLP}
+
+MLP with $m$ hidden units
+
+$f_m^{\text{MLP}}(\mathbf x;\bm \beta;\bm\theta)=\sum_{j=1}^m\frac{\beta_j}{1+\exp[-\bm\theta_j\cdot\mathbf x]}$
+
+MLP SGD: $\theta\leftarrow\theta-\eta\frac{\partial\frac{1}{2}(f(\mathbf x) - y)^2}{\partial\theta}$ with $\theta \in \{\beta_j, \theta_{ji}\}$
+
+\textbf{Thm:} as $m \to \infty$, can uniformly approx. any continuous func. arbitrary well on a compact domain.

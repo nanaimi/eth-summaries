@@ -1,0 +1,73 @@
+\section*{Regression}
+\textbf{SVD:}$\X=\mathbf{U}\Sigma\mathbf{V}^T$\\
+\textbf{Model}:
+$y=w_0 + \sum_{j=1}^d\mathbf{X_j} w_j$, $y\subset{\mathbb{R}}$\\
+Introduce $X_0=1$ and rewrite\\
+$y=\mathbf{X} \w \quad \mathbf{X}\in\mathbb{R}^{d\times n},  w \in \mathbb{R}^{d+1}$\\
+Gau.noise$\epsilon \sim \mathcal{N}(0,\sigma^2)$;$y\sim \N(||\X||_2,\sigma^2)$\\
+$\E[y|\X]=X^T w$
+depending linearly on $(1,\x_1,...,\x_d)$;
+$\hat{y}=\mathbf{X}\hat{ w}+\epsilon$\\
+$\hat{ w} \sim \mathcal{N}( w, (\mathbf{X}^T\mathbf{X})^{-1}\sigma^2) $ and\\
+$p(Y|X, w, \sigma) \sim \mathcal{N}(Y|X^T w, \sigma^2)$
+
+% A Regression has Optimum:\\
+% $f^*(x) = \mathbb{E}_Y[Y|X=x]$
+
+
+\subsection*{Ordinary Least Squares}
+$\hat R(w)=\sum_{i=1}^n(y_i-\w^T x_i)^2=||\y-\X\w||^2$\\
+% $X\in\mathbb{R}^{n\times(d+1)}, y\in\mathbb{R}^n,   w\in\mathbb{R}^{d+1}$\\
+$\hat \w = (\X^T\X)^{-1}\X^T\y=\mathbf{V}\Sigma^{-1}\mathbf{U}^T\y$\\
+$\w^*$ \textbf{exists:} $\X^T\X$ invertible$\Leftrightarrow \X$full rank $\Leftrightarrow \X$ full column rank.
+$\E_{\epsilon |\X}[\hat\w]=w\Rightarrow$ unbiased, $\V(\hat \w)=\sigma^2(\X^T\X)^{-1}$;
+orth. projection with lowest variance of all unbiased estimates.\\
+\textbf{Prediction:} $\hat{y}{=}\mathbf{X}\hat{ w}{=}\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^{T}\mathbf{y}$
+\subsection*{Ridge Regression ($L^2$ penalty)}
+$\hat R_{ridge}(w)=\sum_{i=1}^n(y_i-\w^T x_i)^2+\lambda\w^T\w=||\y-\X\w||^2+\lambda||\w||^2$;
+$\hat \w_{ridge}(\lambda)=(\X^T\X+\lambda \I_d)^{-1}\X^T\y=\mathbf{V}(\Sigma^2+\lambda \I)^{-1}\Sigma\mathbf{U}^T\y$\\
+$\E_{\epsilon |\X}[\hat\w_{r}]=(\X^T\X+\lambda\I)^{-1}(\X^T\X)\w$;biased
+$\V(\hat \w_{ridge})=\sigma^2(\X^T\X+\lambda\I)^{-1}(\X^T\X)$\\$[(\X^T\X+\lambda\I)^{-1}]^T$;
+$\V(\hat \w)\geq\V(\hat \w_{ridge})$;
+%Bayes: $Y|(X, w)\sim\N(x^T w,\sigma^2\I)$;\\
+%prior: $ w\sim\N(0,\frac{\sigma^2}{\lambda}\I)$;
+$\hat R_{ridge}(w)$ convex $\Leftrightarrow$ Hessian $D^2\hat R_{ridge}(w)$ positive semi definite;
+strictly convex; always unique sol; $\lambda \w^T\w$  biases sol. towards origin; shrinks the low variance components, $\Sigma_{jj}=d_{jj}\Rightarrow d_{jj}^{-1}\geq \frac{d_{jj}}{d_{jj}^2}+\lambda; \forall \lambda >0$
+
+\subsection*{Lasso ($L^1$ penalty)}
+$\hat R_{lasso}(\w) = ||\y-\X\w||^2+\lambda|| w||_1$\\
+no closed form; sparse solutions $\rightarrow$ better generalization than ridge; convex;diamond
+
+% \iffalse
+% \subsection*{Bayesian Linear Regression}
+% \textbf{Setting:} Define a prior over $ w$.\\
+% \textbf{e.g. Ridge:} Assume $ w$ distributed as:\\
+% $p( w|\bm{\bm{\Lambda}}){=}\mathcal{N}( w|\mathbf{0},\frac{\sigma^2}{\lambda}\mathbb{I}) \propto \mathrm{exp}(-\frac{\lambda}{2\sigma^2} w^T w)$\\
+% For $\bm{\Lambda}=\frac{\sigma^2}{\lambda}\mathbb{I}$. Linear for $\sigma=1$.
+
+% Then, given observed $\mathbf{X},\mathbf{y}$, use Bayes' theorem to find the posterior\\
+% $p( w|\mathbf{X},\mathbf{y}, \bm{\Lambda}, \sigma) = \mathcal{N}(\mu_{ w}, \Sigma_{ w})$\\
+% $\mu_ w = \sigma^2(\mathbf{X}^T\mathbf{X} +\sigma^2\bm{\Lambda})^{-1}\mathbf{X}^T\mathbf{y}$\\
+% $\Sigma_ w = \sigma^2(\mathbf{X}^T\mathbf{X} +\sigma^2\bm{\Lambda})^{-1}$
+% \fi
+
+\subsection*{Nonlinear Regression}
+basis expansion
+\textbf{Idea:} Feature space transformation\\
+Model: $\mathbf{Y}=f(\mathbf{X})=\sum_{i=1}^d\w_i \phi_i(\x)$\\
+Transformation $\phi_i(\mathbf{X}):\mathbb{R}^d \rightarrow \mathbb{R}$
+
+% \iffalse
+% \section*{Bias-Variance tradeoff}
+% Bias($\hat{f}$)$=\mathbb{E}[\hat{f}]-f$\\
+% Var($\hat{f}$)$=\mathbb{E}[(\hat{f}-\mathbb{E}[\hat{f}])^2]$\\
+% $|\mathcal{Z}|\downarrow \quad|\mathcal{F}|\uparrow\quad\Rightarrow\quad\mathrm{Var}\uparrow\quad\mathrm{Bias}\downarrow $\\
+% $|\mathcal{Z}|\uparrow \quad|\mathcal{F}|\downarrow\quad\Rightarrow\quad\mathrm{Var}\downarrow\quad\mathrm{Bias}\uparrow $
+
+% \subsection*{Squared Error Decomposition}
+% $\mathbb{E}_D\mathbb{E}_{X,Y}[(\hat{f}(X)-Y)^2]=$\\
+% $\mathbb{E}_{X,Y}[(\mathbb{E}_{Y|X}[Y]-Y)^2]$ (noise$^2$)\\
+% $+\mathbb{E}_X\mathbb{E}_D[(\hat{f}_D(X)-\mathbb{E}_D[\hat{f}(X)])^2]$ (var.)\\
+% $+\mathbb{E}_X[(\mathbb{E}_D[\hat{f}_D(X)]-\mathbb{E}_{Y|X}[Y])^2]$ (bias$^2$)\\
+% With $\mathbb{E}_{Y|X}[Y]$ the expected label and $\mathbb{E}_{D}[\hat{f}(X)$ the expected classifier.
+% \fi

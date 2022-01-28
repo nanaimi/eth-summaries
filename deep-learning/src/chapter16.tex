@@ -1,0 +1,17 @@
+\section*{Chapter 16: Factor Analysis}
+Find latent variables $(\z_1, \hdots, \z_m)$ s.t they represent observations $(\x_1, \hdots, \x_n)$ for $n>m$. They are releated through a matrix of coefficients (need to learn).
+
+Given latent variable $\z \sim p(\z)$, observe $\x$ with likelihood $p(\x|\z)$: (1) set a prior on $\z: \z\sim N(0, I)$ and (2) model $\x$ according to a linear model: $x = \mu + W\z + \eta$ where $W$ captures relation between $\x$ and $\z$ and $\eta \sim N(0, \Sigma), \Sigma:=\text{diag}(\sigma_1^2, \hdots, \sigma_n^2)$ is random noise.
+
+$\mu$ can be computed using MLE: $\hat\mu = \frac{1}{t}\sum_{i=1}^t\x_i$
+
+Then, $\x \sim N(\mu, WW^\top + \Sigma)$
+
+\subsection*{Moment Generating Functions (MGF)}
+The MGF of random vector $\x$ is 
+
+$M_\x : \R^n \to \R, M_\x(t):= \E_\x\exp{[t\cdot\x]}$.
+
+It represents moments $(k_1, \hdots, k_n)$ of $\x$ as $\E[x_1^{k_1} \hdots x_n^{k_n}] = \frac{\partial k}{\partial t_1^{k_1} \hdots \partial t_n^{k_n}}M_\x |_{t=0}$ 
+
+Idea: once we have MGF, computing any moment is easy. Given RV $\x$ and $\y$ with $M_\x$ and $M_\y \to$ $M_{\x+\y} = M_\x \cdot M_\y$.

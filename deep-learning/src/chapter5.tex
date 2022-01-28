@@ -1,0 +1,21 @@
+\section*{Chapter 5: Approximation Theory}
+
+\subsection*{Universality}
+
+A function $f$ can be approximated by another class of functions $G$ $\to$ $\inf_{g\in G} d(f,g) = 0$.
+
+$G$ univ. approx. iff $ C(s) \simeq G(s) \forall \text{ compact } S \subset \R^n$ 
+
+\textbf{Weierstrass Thm}: Polynomials $\mathcal P$ are dense in $C(I)$, where $I = [a; b]$ for any $a < b$ (can approx all cont. functions in compacta)
+
+- MLP with 1-hidden layer and smooth non-polynomial activation function $\sigma$ is a universal approximator for $C(\R)$
+
+- Spans of ridge functions are universal approx.
+
+\subsection*{Complexity}
+
+How many units or parameters are required to obtain a desired approximation accuracy?
+
+\textbf{Barron's thm}: for some well-behaved functions (fulfill grad. regularity), MLPs with sigmoidal activation and $m$-layers: do not suffer from the curse of dimensionality and error bounded by $\mathcal O(\frac 1 m)$ $\to$ are expressive and efficient.
+
+\textbf{Thm}: there exits a function $g$ s.t. $g$ is expressible by a 2 hidden layer network with width polynomial in $n$ but one hidden layer needs exponentially many units in $n$. $\to$ in some cases, depth provides exponential benefit when approx. functions.

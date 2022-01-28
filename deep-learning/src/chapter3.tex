@@ -1,0 +1,45 @@
+\section*{Chapter 3: Linear Networks}
+
+\textbf{Linear unit:} $L(\x;\theta) = x\cdot\theta, x\cdot\theta=\sum_{i=1}^n \x_i\theta_i$. Defines a unique direction of change $\frac{\theta}{\|\theta\|}$ and a constant rate of change via $\|\theta\|$.
+
+\textbf{Affine unit:} $L(\x;\theta, b) = \x\cdot\theta + b$
+
+\textbf{Delta rule: } $\Delta\theta = \alpha(\y-\theta \x)\x^\top$ -> Performs GD on squared error for linear layer.
+
+A function $f: \mathbb{R}^n \mapsto \mathbb{R}^m$ is linear if:
+
+Homogeneity: $f(\alpha x) = \alpha f(\x)$ and
+
+Additivity: $f(\x+\y) = f(\x) + f(\y)$
+
+\subsection*{Linear Autoencoder}
+$\x \mapsto z \mapsto \y, z=\mathbf{C}\x, \y=Dz$, $C, D^\top \in \mathbb{R}^{m\times n}$, $m<n$. 
+
+$l(\x) = \|\x-\y\|^2$ = $\|\x-\mathbf{D}z\|^2$. Learn map s.t. $DC \approx I$
+
+Minimize reconst. loss: $\frac{1}{2s}\sum_{t=1}^s\|\x^t-\mathbf{DC}\x^t\|^2$
+
+Can also minimize Frob. norm loss: $\frac{1}{2s}\|\X-\Y\|_F^2$
+
+$\frac{\partial l(\x)}{\partial C_{ki}} = \sum_{j=1}^{n}(\y_j-x_j)\cdot \frac{\partial \y_j}{\partial C_{ki}} = \x_i \cdot \sum_{j=1}^nC_{jk}(\y_j-\x_j) = D^\top(\y-\x)\x^\top  \in \R^{m\times n}$
+
+$\frac{\partial l(\x)}{\partial D_{jk}} = \sum_{i=1}^{n}(\y_i-\x_i)\cdot \frac{\partial \y_i}{\partial D_{jk}} = (\y_j-\x_j) \cdot \sum_{i=1}^nC_{ki}\x_i = (\y-\x)\x^\top C^\top \in \R^{n\times m}$
+
+DC has \textbf{reduced rank} $rank(\mathbf{DC}) \leq \min\{rank(\mathbf{C}), rank(\mathbf{D})\} \leq m < n$.
+
+$\implies \mathbf{Y} = \mathbf{DCX}, \text{rank}(\mathbf{Y})\leq\min\{m, \text{rank}(\mathbf{X})\} \leq m$
+
+\textbf{Reduced SVD}. $\mathbf{X}_r = \mathbf{U}_r\Sigma_r\mathbf V_r^\top$ where we reduce the SVD decomposition s.t. $\mathbf{U}_r = [u_1 \hdots u_r], \mathbf{V}_r = [v_1 \hdots v_r], \Sigma = \text{diag}(\sigma_1, \hdots, \sigma_r)$.
+
+The significance of these definitions is given by \textbf{Eckart-Young theorem}:
+
+$\|\mathbf{X}-\mathbf{X}_r\|_F = \min_{rank(\mathbf{Y}) \leq r}\|\mathbf{X}-\mathbf{Y}\|_F$ 
+
+For a fixed rank $k$, the optimal solution is $\hat{\X}^* = \argmin_{\hat{\X}: \text{rank}(\hat{\X}) = k} \|\X-\hat{\X}\|_F^2 = \mathbf U \Sigma_k \mathbf V^\top$
+
+Thus, best autoencoder can perform a map s.t. $\mathbf{Y} = \mathbf{DCX} = \mathbf{X}_m$ where $m$ is dim. of bottleneck layer. $\mathbf{C}=\mathbf{U}_m^\top, \mathbf{D}=\mathbf{U}_m \implies \mathbf{DCX} = \mathbf{X}_m$
+
+Esentially performs PCA. Because of lack of identifiability, rows of $\mathbb C$ may not be principal vectors. However, they span the same space.
+
+\subsection*{Least Squares}
+Goal: $\Theta \xMapsto[]{min} l(\Theta) = \frac{1}{2s}\|Y - \Theta \X\|_F^2 $

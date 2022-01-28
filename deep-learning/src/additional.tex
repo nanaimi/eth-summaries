@@ -1,0 +1,61 @@
+\section*{Extra}
+\subsection*{Probabilities}
+%\section*{Probabilities}
+%\subsection*{Expect, Var, Cov, Bay}
+%$\E[X]=\int_{\Omega}xf(x)\di x=\int_{\omega}x\Prob[X{=}x]\di x$ \\
+$\E_{Y|X}[Y]=\E_{Y}[Y|X]$\\
+$\E_{X,Y}[f(X,Y)]=\E_{X}\E_{Y|X}[f(X,Y)|X]$
+$\E_{Y|X}[f(X,Y)|X]{=}\int_\mathbb{R}f(X,y)\Prob(y|X)\di y$
+
+%$\mathbb{V}(X){=}\E[(X{-}\E[X])^2]{=}$ \\ $\E[X^2]{-}\E[X]^2$\\
+%$\mathbb{V}[X+Y]{=}\V[X]+\V[Y]\quad X,Y \,\text{iid}$\\
+%$\mathbb{V}[\alpha X]=\alpha^2\mathrm{Var}[X]$
+
+$\C(\X,\Y)=\E[(\X-\E[\X])(\Y-\E[\Y])] = \E[\X\Y^T]-\E[\X]\E[\Y]^T$ \\
+$\C(\mathbf{a}\X,\mathbf{b}\Y)=\mathbf{a}\C(\X,\Y)\mathbf{b}^T$\\
+%\subsection*{Conditional Probabilities \& Bayes}
+%$\Prob[X|Y]=\frac{\Prob[X,Y]}{\Prob[Y]}=\frac{\Prob[Y|X]\Prob[X]}{\Prob[Y]}$
+$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$; $p(Z|X,\theta) = \frac{p(X,Z|\theta)}{p(X|\theta)}$\\
+$P(x,y) = P(y|x) \cdot  P(x) = P(x|y) \cdot P(y)$
+$P(x)=\sum_i P(x|y=i)P(y=i)$
+\subsection*{Distributions}
+$\N(x|\mu, \Sigma)= \frac{\exp(-\frac{1}{2}(\mathbf{x}-\mu)^T\Sigma^{-1}(\mathbf{x}-\mu))}{(2\pi)^{D/2}|\Sigma|^{1/2}}$;\\
+Emp.: $\hat{\Sigma} = \frac{1}{n}\sum_{i=1}^n x_i x_i^T$ (need centered data)\\
+$\E[X^2]= \Sigma+ \mu\mu^T, \E[\hat{\sigma}^2]=\frac{n-1}{n}\sigma^2 $\\
+$\mathrm{Exp}(x|\lambda){=}\lambda e^{-\lambda x}; \, \frac{1}{\lambda}; \, \frac{1}{\lambda^2}$\\
+$\mathrm{Ber}(x|\theta){=}\theta^x (1{-}\theta)^{(1-x)}; \, \theta; \, \theta(1-\theta)$\\
+$\mathcal{N}(x|\mu, \sigma^2)=\frac{e^{-(x-\mu)^2/(2\sigma^2)}}{\sqrt{2\pi\sigma^2}}$
+\subsection*{Jensen}
+$\phi(\E)\leq \E[\phi]$; $\phi$ convex (reversed if concave:)$\E[\min]\leq \min\E$;$\E[\log]\leq\log\E$
+\subsection*{Convex}
+$\text{f(x) convex} \Leftrightarrow f''(x) > 0 \Leftrightarrow x_1,x_2 \in \mathbb{R}, \lambda \in [0,1]: 
+f(\lambda x_1 + (1-\lambda) x_2) \leq \lambda f(x_1) + (1-\lambda) f(x_2)$
+
+\subsection*{Positive semi-definite matrices}
+$M \in \mathbb{R}^{n\times n}$ is psd $\Leftrightarrow$\\
+$\forall x \in \mathbb{R}^n: x^TMx \geq 0 \Leftrightarrow$\\
+all eigenvalues of $M$ are positive: $\lambda_i\geq 0$
+\subsection*{Completing squares}
+$\mathbf{x}^T\mathbf{A}\mathbf{x}-2\mathbf{b}^T\mathbf{x} = (\mathbf{x}-\mathbf{A}^{-1}\mathbf{b})^T\mathbf{A}(\mathbf{x}-\mathbf{A}^{-1}\mathbf{b})-\mathbf{b}^T\mathbf{A}^{-1}\mathbf{b}$;\\
+$ax^{2}+bx+c=a(x-h)^{2}+k$: $h=-{\frac {b}{2a}}$; $k=c-ah^{2}=c-{\frac {b^{2}}{4a}}$
+
+
+
+
+
+
+
+\subsection*{Derivatives}
+$\nabla_\x\log(1+\exp(-\alpha x))=\frac{-\alpha}{1+\exp(\alpha x)}$
+$\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{x}) = \frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{b}) = \mathbf{b}$;
+$\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$ \\
+$\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{A}\mathbf{x}) = (\mathbf{A}^\top + \mathbf{A})\mathbf{x} (= 2\mathbf{A}\x$ if symm) \quad\\
+$\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{A}\mathbf{x}) = \mathbf{A}^\top \mathbf{b}$ \quad
+$\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X} \mathbf{b}) = \mathbf{c}\mathbf{b}^\top$ \quad
+$\frac{\partial}{\partial \mathbf{x}}(\| \mathbf{x}-\mathbf{b} \|_2) = \frac{\mathbf{x}-\mathbf{b}}{\|\mathbf{x}-\mathbf{b}\|_2}$ \\
+$\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$ \quad
+\\$\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$  \quad \quad
+$\frac{\partial}{\partial \mathbf{x}}||\mathbf{x}||_1 = \frac{\mathbf{x}}{|\mathbf{x}|}$ \\
+$\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{Ax - b}\|_2^2) = \mathbf{2(A^\top Ax-A^\top b)}$ \quad
+$\frac{\partial}{\partial \mathbf{X}}(|\mathbf{X}|) = |\mathbf{X}|\cdot \mathbf{X}^{-1}$ $\quad |X| = 1 / |X^{-1}|$\\
+$\frac{\partial}{\partial x}(\mathbf{Y}^{-1}) = -\mathbf{Y}^{-1} \frac{\partial\mathbf{Y}}{\partial x} \mathbf{Y}^{-1}$

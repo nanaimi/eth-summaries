@@ -1,0 +1,15 @@
+\section*{Dimension reduction}
+\subsection*{PCA}
+$D\subset \mathbb{R}^d$; $\mu = \frac{1}{n}\sum_{i=1}^nx_i=0$; 
+$\Sigma = \frac{1}{n}\sum_{i=1}^n x_i x_i^T$\\
+$(W,z_1,...,z_n) = \operatorname{argmin} \sum_{i=1}^n||W z_i - x_i||_2^2$;\\
+$W = (v_1|...|v_k) \in \mathbb{R}^{d \times k}$ ortho; $z_i = W^T x_i$ \\ 
+$v_i$ eigenvec of $\Sigma$
+
+\subsection*{Kernel PCA}
+$\alpha^{(1)},...,\alpha^{(k)}\in \mathbb{R}^n$, $\alpha^{(i)} = \frac{1}{\sqrt{\lambda_i}}v_i$, $K = \sum_{i=1}^n \lambda_i v_i v_i^T$, $\lambda_1 \geq ... \geq \lambda_d \geq 0$\\
+New p: $z = f(\x) = \sum_{j=1}^n\alpha_j^{(i)}k(\x,x_j)$; $z\in \R^k$
+
+\subsection*{Autoencoders}
+Find identity function: $x \approx f(x;\theta)$\\
+$f(x;\theta) = f_{decode}(f_{encode}(x;\theta_{encode});\theta_{decode})$

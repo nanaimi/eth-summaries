@@ -1,0 +1,25 @@
+\section*{Chapter 11: Deep Gradients}
+\subsection*{Short connectivity}
+Include skip connections to avoid vanishing gradients in deep networks. Instead of having $x'=\sigma(W_2\sigma(W_1x))$, we define $x'=\sigma(W_2\sigma(W_1x) + W'x)$. $W'$ is only used if there is a change in the shapes. Otherwise, $W'=I$
+
+\subsection*{Dense connectivity}
+Create dense blocks by concatenating channels from all previous layers. Use transition layers to reduce dimensionality after dense block.
+
+\subsection*{Normalization}
+Idea: normalize output of layers before activation.
+
+\textbf{Batch norm.} Very effective and used in CV. Depends on batch size (larger is better) and not suitable for all arch. For each batch $I \subseteq [1,..., s]$ in a fixed layer $l$, compute:
+
+Mean activity: $\mu^l:=\frac{1}{|I|}\sum_{t\in I}z^l[t]$
+
+Vector of std: $\sigma_i^l := \sqrt{\delta + \frac{1}{|I|}\sum_{t\in I}(z^l[t]-\mu_i^l)^2}$
+
+Norm activities: $\tilde{z}_i^l := \alpha_i^l \frac{z_i^l - \mu_i^l}{\sigma_i^l} + \beta_i^l$ where $\alpha, \beta$ are learned to regain representational power and achieve faster convergence.
+
+\textbf{Layer norm.} Useful for RNN. Not consistent benefits across tasks. Works with any batch size, even 1. Follows same idea as BN.
+
+$\mu^l[t] := \frac{1}{m^l}\sum_{i=1}^{m^l}z_i^l[t]$
+
+$\sigma^l[t] := \sqrt{\delta + \frac{1}{m^l}\sum_{i=1}^{m^l}(z_i^l[t]-\mu^l[t])^2}$
+
+$h[t] = f_1(\frac{g}{\sigma^l[t]} \cdot (a[t] - \mu[t]) + b)$

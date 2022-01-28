@@ -1,0 +1,14 @@
+\section*{Feature selection}
+\subsection*{Greedy feature selection}
+slow, high computational cost;
+applies to any prediction method
+\subsubsection*{Forward}
+start with 0 feat. add best feat as long as error decreases.
+\textbf{Problem:} 1 feature $\Rightarrow$ 50\% error rate;
+usually faster
+\subsubsection*{Backward}
+start with all feat. remove worst feat as long as error decreases.
+Can handle dependent feat.
+\subsection*{L1 as surrogate for L0}
+fast,(training and feat selection happen jointly);
+only works for linear models

@@ -1,0 +1,36 @@
+\section*{Chapter 17: Adversarial Attacks}
+
+\textbf{Adversarial robustness} can be evaluated in two ways: (1) given $\epsilon \geq 0$, return proportion of input samples for which there exists no adv perturbation with $\|r\|_p \leq \epsilon$. (2) return avg norm of minimal adversarial perturbations for each sample.
+
+\textbf{Adversarial attack def: } Let $k : \R^d \to \{1, \hdots, C\}$ be a C-class classifier and $\x \in \R^d$ be an input. We define adv perturbation for $\x$ as finding $r\in\R^d$ s.t.:
+
+- $k(\x+r) \neq k(\x)$
+
+- $\x + r$ is similar to $\x$
+
+- $\|r\|_p$ is small
+
+\textbf{Minimal adv perturbation}: $\argmin_r \|r\|_p$ s.t. $k(\x+r) \neq k(\x)$ $\to$ break into problems that can be analitically solved.
+
+For a binary linear classifier $f(x) = W^\top\x + b$ and $k(x) = 1$, solve: $\argmin_r \|r\|_p$ s.t. $(f_1(x+r) - f_2(x+r)) < 0 \equiv (w_1-w_2)^\top + f_1(\x) - f_2(\x) < 0$
+
+\textbf{Hölder's ineq}: $r = \frac{f_1(x) - f_2(x)}{\|w_2-w_1\|_q^q}[(w_1-w_2) \odot \text{sign}(w_1-w_2))]^{\odot(q-1)}\odot\text{sign}(w_2-w_1)$. In 2-D, simplifies to: $r = \frac{f_1(x) - f_2(x)}{\|w_2-w_1\|_2^2}(w_2-w_1) \to$ projection to decision boundary.
+
+For many classes, solve $r_i$ for $i\neq 1$ and choose $r = \argmin_{\{r_i\}} \|r_i\|_2$
+
+\subsection*{DeepFool}
+Since there is closed solution for linear classifier, solve initial problem by a sequence of linearized problems. In the binary case: $\argmin_r \|r\|_p$ s.t. $(\nabla_xf_1(x) - \nabla_xf_2(x))^\top r + f_1(x) -f_2(x) < 0 \to$ first order taylor exp. Solve iter until find sol.
+
+\subsection*{Adversarial training}
+
+\textbf{Robust opt}: $\min_\theta \max_{\|\mathbf r\|_p\leq \epsilon} \ell(y, f_\theta(x+r))$ 
+
+\textbf{Danskin's Thm}: Intuition: we can first find max perturbation and then minimize loss wrt it. Let $r^*(\boldsymbol \theta):=\argmax_{\|\boldsymbol r\|\leq \epsilon} l(\boldsymbol \theta, \mathbf r)$, then $$\nabla_{\boldsymbol\theta}\max_{\|\mathbf r\|\leq \epsilon} g(\boldsymbol\theta, \mathbf r)=\nabla_{\boldsymbol\theta}l(\boldsymbol\theta, \mathbf r^*(\tilde{\boldsymbol\theta}))|_{\boldsymbol{\tilde\theta}=\boldsymbol\theta}$$ 
+
+Maximization is usually solved using \textbf{PGD}. 
+
+- $p=2 \to \tilde r^{s+1} \leftarrow r^s + \alpha \nabla_x l(f_\theta(x+r^s), y)$. Then, $r^{s+1} = \Pi_\epsilon^2(\tilde r^{s+1}) \to$ projection
+
+- $p=\infty \to \tilde r^{s+1} \leftarrow r^s + \alpha \text{sign}(\nabla_x l(f_\theta(x+r^s), y))$. Then, $r^{s+1} = \Pi_\epsilon^\infty(\tilde r^{s+1})$
+
+\textbf{FGSM} $\equiv$ 1-iter $l_\infty$-PGD. Weak.

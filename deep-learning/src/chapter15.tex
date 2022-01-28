@@ -1,0 +1,40 @@
+\section*{Chapter 15: Learning on Graphs}
+A graph is made of a set of nodes $\mathcal V = \{v_1, \hdots, v_n\}$ and a set of edges $\mathcal E$ that encode dependencies.
+
+Given a connected, undir., weighted graph $G=\{\mathcal{V, E, W}\}$ and $\x$, vector containing vertex values:
+- Adjacency matrix (A) contains weight of edges between nodes.
+
+- Degree matrix (D): diag matrix with incoming weights for each node: $D_{ii} = \sum_{j}A_{i,j}$.
+
+- \textbf{Edge derivative: } $\nabla_{i,j}\x = \frac{\partial\x}{\partial e_{i,j}} = A_{i,j}(x_j-x_i)$
+
+- Laplacian: $L_x = \nabla^\top\nabla\x = D-A$
+
+- Norm Lap.: $L' = \mathbb{I}-D^{-1/2}AD^{-1/2} = D^{-1/2}LD^{-1/2}$. Its max eigenvalue is 2.
+
+- $L = \nabla^\top\nabla$ is symmetric positive semi-definite $\to L=U\Lambda U^\top$ where $U$ is the graph Fourier basis w/ transform $\hat{\x} = U^\top\x$ and inverse transform $\x = U\hat{\x}$
+
+Convolution in graphs can be defined in 3 ways:
+
+\subsection*{1. Spectral convolution}
+It generalizes traditional convolution. Multiplication in spectral domain. For a kernel $h$, the conv. of $h$ and $\x$ is $h(L)\x := Uh(\Lambda)U^\top\x $
+
+Needs full Laplacian decomposition $\to O(|\mathcal V|^3)$.
+
+Can use polynomial kernels $p(t) = \sum_{i=0}^K\alpha_it^i$. Then filtering becomes: $p(L)x := Up(\Lambda)U^\top\x = U(\sum_{i=0}^K\alpha_i\Lambda^i)U^\top\x = \sum_{i=0}^K\alpha_iL^i\x$. Assuming L is sparse, complexity scales with \#edges: $O(|\mathcal E|)$
+
+The order of the polynomial defines the size of the neighborhood to gather info. In practice, given $c_{in}$ channels and desired $c_{out}$ channels, we learn $c_{in} \cdot c_{out}$ polynomial kernels shared for all nodes, add bias $\beta_j$. Sum over channels to keep hidden variables under control. \#params $= c_{in}\cdot c_{out}\cdot(K+1)\cdot c_{out}$
+
+\subsection*{2. Vertex convolution}
+Define conv generically using a shared operation for all edges and nodes and an aggregation (AGG) and combination (COM) function. A convolution layer is defined:
+
+- $Z_i^{(k)} = \text{AGG}(\{e(X_i^{k}, X_j^{(k)}, A_{i,j}): v_i \sim v_j\})$
+
+- $X_i^{(k+1)} = \text{COM}(Z_i^{k}, h(X_i^{(k)}))$
+
+where $e$ is a shared function for all nodes (MLP) and $h$ is also shared. Everything is done in vertex domain.
+
+\subsection*{3. Graph Convolutional Networks}
+$1^{st}$ order spectral conv (mix of prev approaches). 
+
+Apply MLP on the nodes with shared parameters and coupling activities of neighboring units: $\X^{l+1} = \sigma(W^l\X^l\mathbf Q)$ where $\mathbf Q$ is the coupling matrix. Usual choice: degree-normalized matrix $Q=\tilde D^{-\frac 1 2}\tilde A\tilde D^{-\frac 1 2}$; augmented adjacency matrix $\tilde A := A + \mathbb{I}_n$, diagonal degree matrix $\tilde D$ of $\tilde A$.

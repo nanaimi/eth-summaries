@@ -1,0 +1,43 @@
+\section*{Chapter 2: Connectionism}
+%\section*{Probabilities}
+%\subsection*{Expect, Var, Cov, Bay}
+%$\E[X]=\int_{\Omega}xf(x)\di x=\int_{\omega}x\Prob[X{=}x]\di x$ \\
+
+\textbf{Perceptron: } $f(x, \theta) = 1 \text{ if } \sum_i x_i\theta_i \geq 0 \text{, else } -1$
+
+Only updates on mistake $\theta = \theta + \Delta\theta$ where $\Delta\theta = 0 \text{ if } y\cdot sign(x\theta) \geq 0 \text{, else } yx$
+
+After $t$ mistakes inducing $\Delta\theta^t$, $\Delta\theta^s = \sum_{t=1}^s\|x^t\|^2$.
+
+\textbf{Cor:} if $\|x^t\|\leq 1 (\forall t)$, then $\|\Delta\theta^t|\| \leq 1$ and $\|\theta^s\| \leq \sqrt{s}$
+
+\textbf{Def:} $D$ is linearly separable with $\gamma > 0$ if: $\exists\theta^*, \|\theta^*\| = 1 : yx\cdot\theta^* \geq \gamma > 0 (\forall(x,y) \in D)$
+
+\textbf{Novikoff's thm:} perceptron converges in at most $\lfloor\gamma^{-2}\rfloor$ steps on any $\gamma$-separable dataset. 
+
+\textbf{Cover's thm:} We can label $S$ points in $n$ dimensions in $2\sum_{i=0}^{n-1}\binom{S-1}{i}$ different ways
+
+\subsection*{Willshaw memory}
+Learn to map $x^t \mapsto y^t$ with $\Theta \in \mathbb{R}^{n\times n}$ s.t. $\sum_i x_i = r$
+
+\textbf{Store: } $\Theta_{ji} = \min\{1, \sum_{t=1}^sy_j^tx_i^t\}$
+
+\textbf{Retrieve: } $z = \Theta x; y_j = 0 \text{ if } z_j < r \text{, else } 1$
+
+Optimal use of memory: patters with $r=\log n$. We could store 69\% of the max \# of poss patterns.
+
+Hebb rule implies monotonicity: cannot lose info.
+
+\subsection*{Hopfield networks}
+Defined by n binary neurons $x_i \in \{-1,1\}$ connected with sym $\theta$: ($\theta_{ij} = \theta_{ji}$), $\theta_{ii}=0$ and biases $\theta_{i0}$.
+
+\textbf{Neuron update: } $x_i = sgn(\sum_{j\neq i}\theta_{ij}x_j+\theta_{i0})$
+
+Converges bc energy monotonically decreases. Depends on init.
+We can use this network as auto-associative memory that recover a pattern from a corrupted version. Use Hebbian Hopfield Mem.:
+
+\textbf{Hebbian mem: } $\Theta \propto \sum_{t=1}^{s}[x^t{x^t}^{\top}-I] \in \mathbb{Z}^{nxm}$
+
+To recover $x$ from $\tilde{x}$: $\Theta\tilde{x} = (xx^\top - I)\tilde{x} = [(x\cdot\tilde{x})-1]x = (n-2k-1)x \propto x$
+
+Not very efficient $\frac{s}{n} \leq \alpha \approx 0.138$

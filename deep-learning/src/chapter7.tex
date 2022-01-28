@@ -1,0 +1,53 @@
+\section*{Chapter 7: Rectified Networks}
+%\section*{Probabilities}
+%\subsection*{Expect, Var, Cov, Bay}
+%$\E[X]=\int_{\Omega}xf(x)\di x=\int_{\omega}x\Prob[X{=}x]\di x$ \\
+\subsection*{Rectified Units}
+\textbf{ReLU: } $(x, \theta) \mapsto (x\cdot\theta)_{+} = \max\{0, x\cdot\theta\}$. Convention: $\partial(z=0)_+ = 0$. Its benefit is that gradient does not vanish due to saturation: $\partial (z)_+ = 1 (\forall z > 0)$
+
+Efficient backprop: $\partial(z_{lj}=0)_+ = 0 \implies \nabla_{\theta_{lj}}z_{lj} = 0$
+
+\textbf{Absolute Value Unit: } $(x, \theta) \mapsto |x\cdot\theta|$
+
+Relation: $(z)_+ = \frac{1}{2}(|z|+z)$ and $|z| = 2(z)_+-z = (z)_+ + (-z)_+$
+
+\textbf{Smooth ReLU Approximations}
+
+\textbf{Softplus} $\in (0; \infty)$:  $(x;\theta) \mapsto \ln(1+exp[x\cdot\theta])$
+
+\textbf{elu} $\in (-1; \infty)$: 
+
+$
+(x, \theta) \mapsto =\begin{cases}
+			x\cdot\theta & \text{if } x\cdot\theta \geq 0\\
+            exp[x\cdot\theta] - 1 & \text{else}
+		 \end{cases}
+$
+
+\textbf{Leaky ReLU} $\in \mathbb{R}$: 
+
+$
+(x, \theta) \mapsto =\begin{cases}
+			x\cdot\theta & \text{if } x\cdot\theta \geq 0\\
+            \epsilon x\cdot\theta & \text{else}
+		 \end{cases}
+$
+
+\subsection*{Piecewise Linear Approximation}
+\textbf{Thm:} Piecewise linear functions are dense in $C([0; 1])$
+
+\textbf{Thm:} A piecewise linear function with m pieces can be written as: $g(x) = ax+b + \sum_{i=1}^{m-1}c_i(x-x_i)_+ = a'x+b'+\sum_{i=1}^{m-1}c_i'|x-x_i|$
+
+\textbf{Corollary: } Networks with one hidden layer of ReLU or absolute value units are universal function approximators.
+
+\textbf{Thm:} Every continuous piecewise linear function $g: \R^n \mapsto \R$ can be written as a signed sum of k-Hinges with $k\leq n+1$ -> Exact (not approx). Maxout units are $k$-hinge functions.
+
+\textbf{Thm:} Maxout networks with two maxout units are universal function approximators.
+
+\textbf{Polyhedral functions:} continuous piecewise linear functions that are also convex.
+
+\textbf{Thm:} Every continuous piecewise linear funciton $f$ can be written as the difference of two polyhedral functions.
+
+The minimal non-linearity needed to ensure universality are two maximum operations over finite sets.
+
+\subsection*{Number of Linear Regions}

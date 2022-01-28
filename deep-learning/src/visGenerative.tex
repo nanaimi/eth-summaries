@@ -1,0 +1,62 @@
+\section*{Generative modeling}
+estimate joint: $P(y,\x)$; can derive cond from joint;
+1. generate class labels: $P{(y)}$ \textbf{MLE};
+2. generate feat given class: $P(\x|y)$ \textbf{MLE};
+3. obtain pred: $P(y|\x)=\frac{P(y)P(\x|y)}{Z}$,
+$Z=P(\x)=\sum_yP(\x,y)=\sum_yP(y)P(\x|y)$ \textbf{MAP};
+\subsection*{Discriminative}
+estimate cond: $P(y|\x)$; not modeling $P(\x)$;
+no outlier detection
+
+\subsection*{Naive Bayes}
+$P(Y=y)=p_y$; $y\in\mathcal{Y}=\{1,...,c\}$;$\sum_yp_y=1$
+cond ind:
+$P(X_1,...,X_d|Y)=\prod_{i=1}^dP(X_i|Y)$\\
+$P(\X=(x_1,...,x_d))=\sum_yp((x_1,...,x_d),y)=\sum_yp((x_1,...,x_d)|y)p_y$
+
+
+\subsection*{Examples}
+\subsubsection*{multivar. Bernouilli Naive Bayes}
+$p(\x_i|y=c)=\prod_{j=1}^d\text{Ber}(x_{ij}|\mu_{jc})$\\
+% \subsubsection*{categorical Naive Bayes}
+% $p(x|y=c,\theta)=\prod_{i=1}^d\prod_{}$\\
+MLE for $P(Y=y) = p_y = \frac{\text{Count}(Y=y)}{n}$\\
+% MLE for $P(x_i|y) = \mathcal{N}(x_i;\mu_{i,y}, \sigma_{i,y}^2)$:\\
+% $\hat{\mu}_{i,y} = \frac{1}{\text{Count}(Y=y)} \sum_{x\in D_{x_i|y}} x$\\
+% $\hat{\sigma}_{i,y}^2 = \frac{1}{\text{Count}(Y=y)} \sum_{x\in D_{x_i|y}} (x-\hat{\mu}_{i,y})^2$\\
+MLE for Poi.: $\lambda = \operatorname{avg}(x_i) $\\
+$\mathbb{R}^d$: $P(X = x|Y = y) = \prod_{i=1}^dPois(\lambda_y^{(i)},x^{(i)})$
+
+
+\subsection*{Deriving decision rule}
+%In order to predict label y for new point x, use\\
+$P(y|x) = \frac{1}{Z} P(y)P(x|y)$, $Z = \sum_y P(y) P(x|y)$\\
+$y^* = \argmax_y P(y|x) = 
+\argmax_y P(y) \prod_{i=1}^d P(x_i|y)$;
+$P_1-P_0\geq0$
+
+\subsection*{Gaussian Bayes Classifier}
+$\hat{P}(x|y) = \mathcal{N}(x ; \hat{\mu}_y, \hat{\Sigma}_y)$\\
+$\hat{P}(Y=y) = \hat{p}_y = \frac{n_y}{n}$\\
+$\hat{\mu}_{y} = \frac{1}{n_y} \sum_{i:y_i=y} x_i \in \mathbb{R}^d$\\
+$\hat{\Sigma}_{y} = \frac{1}{n_y} \sum_{i:y_i=y} (x_i - \hat{\mu}_{y})(x_i-\hat{\mu}_y)^T \in \mathbb{R}^{d \times d}$
+
+\subsection*{Fisher's lin. discrim. analysis (LDA, c=2)}
+Assume: $p = 0.5$; $\hat{\Sigma}_- = \hat{\Sigma}_+ = \hat{\Sigma}$\\
+discriminant function: 
+$f(x) = \operatorname{log} \frac{p}{1-p} + \\
+\frac{1}{2}[\operatorname{log} \frac{|\hat{\Sigma}_-|}{|\hat{\Sigma}_+|}
++ \left((x - \hat{\mu}_-)^T \hat{\Sigma}_-^{-1} (x - \hat{\mu}_-)\right) - \\
+\left((x - \hat{\mu}_+)^T \hat{\Sigma}_+^{-1} (x - \hat{\mu}_+)\right)]$\\
+Predict: $y = \operatorname{sign}(f(x)) = \operatorname{sign} (w^T x + w_0)$\\
+$w = \hat{\Sigma}^{-1}(\hat{\mu}_+ - \hat{\mu}_-)$; \\
+$w_0 = \frac{1}{2}(\hat{\mu}_-^T\hat{\Sigma}^{-1}\hat{\mu}_- - \hat{\mu}_+^T \hat{\Sigma}^{-1}\hat{\mu}_+)$
+
+\subsection*{Outlier Detection}
+$P(x) \leq \tau$
+
+\subsection*{Categorical Naive Bayes Classifier}
+MLE for feature distr.:\\
+$\hat{P}(X_i = c|Y = y) = \theta_{c|y}^{(i)}\\
+\theta_{c|y}^{(i)} = \frac{Count(X_i = c, Y = y)}{Count(Y=y)}$\\
+Prediction: $y^* = \underset{y}{argmax}\hat{P}(y|x)$

@@ -1,0 +1,146 @@
+\subsection*{Probabilities}
+%\section*{Probabilities}
+%\subsection*{Expect, Var, Cov, Bay}
+%$\E[X]=\int_{\Omega}xf(x)\di x=\int_{\omega}x\Prob[X{=}x]\di x$ \\
+$\E_{Y|X}[Y]=\E_{Y}[Y|X]$\\
+$\E_{X,Y}[f(X,Y)]=\E_{X}\E_{Y|X}[f(X,Y)|X]$
+$\E_{Y|X}[f(X,Y)|X]{=}\int_\mathbb{R}f(X,y)\Prob(y|X)\di y$
+
+%$\mathbb{V}(X){=}\E[(X{-}\E[X])^2]{=}$ \\ $\E[X^2]{-}\E[X]^2$\\
+%$\mathbb{V}[X+Y]{=}\V[X]+\V[Y]\quad X,Y \,\text{iid}$\\
+%$\mathbb{V}[\alpha X]=\alpha^2\mathrm{Var}[X]$
+
+$\C(\X,\Y)=\E[(\X-\E[\X])(\Y-\E[\Y])] = \E[\X\Y^T]-\E[\X]\E[\Y]^T$ \\
+$\C(\mathbf{a}\X,\mathbf{b}\Y)=\mathbf{a}\C(\X,\Y)\mathbf{b}^T$\\
+%\subsection*{Conditional Probabilities \& Bayes}
+%$\Prob[X|Y]=\frac{\Prob[X,Y]}{\Prob[Y]}=\frac{\Prob[Y|X]\Prob[X]}{\Prob[Y]}$
+$P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}$; $p(Z|X,\theta) = \frac{p(X,Z|\theta)}{p(X|\theta)}$\\
+$P(x,y) = P(y|x) \cdot  P(x) = P(x|y) \cdot P(y)$
+$P(x)=\sum_i P(x|y=i)P(y=i)$
+\subsection*{Bayesian density learning}
+model: $\theta$;
+data: $\X$;
+prior: $\Prob(\theta)$ (known)\\
+likelihood: $\Prob(\X|\theta)$;
+posterior:
+$\Prob(\theta|\X)$\\
+evidence:
+$\Prob(\theta)$;
+$\Prob(\theta|\X)=\frac{\Prob(\X|\theta)\Prob(\theta)}{\Prob(\X)}$
+\subsection*{Distributions}
+$\mathcal{N}(x|\mu, \sigma^2)=\frac{\exp(-\frac{1}{2}\frac{(x-\mu)^2}{\sigma^2})}{\sqrt{2\pi\sigma^2}}$;\\
+$\N(x|\mu, \Sigma)= \frac{\exp(-\frac{1}{2}(\mathbf{x}-\mu)^T\Sigma^{-1}(\mathbf{x}-\mu))}{(2\pi)^{D/2}|\Sigma|^{1/2}}$;\\
+Emp.: $\hat{\Sigma} = \frac{1}{n}\sum_{i=1}^n x_i x_i^T$ (need centered data)\\
+$\E[X^2]= \Sigma+ \mu\mu^T, \E[\hat{\sigma}^2]=\frac{n-1}{n}\sigma^2 $\\
+$\mathrm{Exp}(x|\lambda){=}\lambda e^{-\lambda x}; \, \frac{1}{\lambda}; \, \frac{1}{\lambda^2}$\\
+$\mathrm{Ber}(x|\theta){=}\theta^x (1{-}\theta)^{(1-x)}$;$ \, \theta$;$ \, \theta(1-\theta)$\\
+$\mathrm{Bin}(n|\theta)=\binom{n}{x}\theta^{x}(1-\theta)^{(n-x)}$;$n\uparrow$;$n\uparrow$
+\subsection*{Jensen}
+$\phi(\E)\leq \E[\phi]$; $\phi$ convex (reversed if concave:)$\E[\min]\leq \min\E$;$\E[\log]\leq\log\E$
+\subsection*{Convex $f(x)$}
+$f''(x) > 0 \Leftrightarrow x_1,x_2 \in \mathbb{R}, \lambda \in [0,1]:
+f(\lambda x_1 + (1-\lambda) x_2) \leq \lambda f(x_1) + (1-\lambda) f(x_2)$
+
+\subsection*{Pos semi-definite mat $M \in \mathbb{R}^{n\times n}$}
+$\forall x \in \mathbb{R}^n: x^TMx \geq 0 \Leftrightarrow$ eigenvalues $\lambda_i\geq 0$
+\subsection*{Completing squares}
+$\mathbf{x}^T\mathbf{A}\mathbf{x}-2\mathbf{b}^T\mathbf{x} = (\mathbf{x}-\mathbf{A}^{-1}\mathbf{b})^T\mathbf{A}(\mathbf{x}-\mathbf{A}^{-1}\mathbf{b})-\mathbf{b}^T\mathbf{A}^{-1}\mathbf{b}$;\\
+$ax^{2}+bx+c=a(x-h)^{2}+k$: $h=-{\frac {b}{2a}}$; $k=c-ah^{2}=c-{\frac {b^{2}}{4a}}$
+
+\subsection*{Derivatives}
+$\nabla_\x\log(1+\exp(-\alpha x))=\frac{-\alpha}{1+\exp(\alpha x)}$
+$\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{A}\mathbf{x}) = (\mathbf{A}^\top + \mathbf{A})\mathbf{x} (= 2\mathbf{A}\x$ if symm) \quad\\
+$\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{A}\mathbf{x}) = \mathbf{A}^\top \mathbf{b}$ \quad
+$\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X} \mathbf{b}) = \mathbf{c}\mathbf{b}^\top$ \quad
+$\frac{\partial}{\partial \mathbf{x}}(\| \mathbf{x}-\mathbf{b} \|_2) = \frac{\mathbf{x}-\mathbf{b}}{\|\mathbf{x}-\mathbf{b}\|_2}$ \\
+$\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$ \quad
+\\$\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$  \quad \quad
+$\frac{\partial}{\partial \mathbf{x}}||\mathbf{x}||_1 = \frac{\mathbf{x}}{|\mathbf{x}|}$ \\
+$\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{Ax - b}\|_2^2) = \mathbf{2(A^\top Ax-A^\top b)}$ \quad
+$\frac{\partial}{\partial \mathbf{X}}(|\mathbf{X}|) = |\mathbf{X}|\cdot \mathbf{X}^{-1}$ $\quad |X| = 1 / |X^{-1}|$\\
+$\frac{\partial}{\partial x}(\mathbf{Y}^{-1}) = -\mathbf{Y}^{-1} \frac{\partial\mathbf{Y}}{\partial x} \mathbf{Y}^{-1}$
+
+\iffalse
+\subsection*{Parametric vs. Nonparametric}
+\textbf{Parametric}: have finite set of parameters. 
+e.g. linear regression, linear perceptron\\
+\textbf{Nonparametric}: grow in complexity with the size of the data, more expressive.
+e.g. k-NN
+\fi
+% \iffalse
+% \section*{Parametric Density Estimation}
+
+% \subsection*{Maximum Likelihood (MLE)}
+% Likelihood: $\Prob(\mathcal{X}|\theta)=\prod_{i\leq n}p(x_i|\theta)$\\
+% Find: $\hat{\theta}\in \argmax_\theta \Prob(\mathcal{X}|\theta)$\\
+% %Procedure: solve $\nabla_\theta \log \Prob(\mathcal{X}|\theta)\equiv 0$\\
+% Consistent: converges to best $\theta_0$;
+% asymptotically normal, asymptotically efficient
+
+% \subsection*{Maximum A Posteriori (MAP)}
+% Assume prior $\Prob(\theta)$\\
+% Find: $\hat{\theta}\in \argmax_\theta \Prob(\theta|\mathcal{X}) =$\\
+% $=\argmax_\theta \Prob(\mathcal{X}|\theta)P(\theta)$\\
+% Solve $\nabla_\theta \log \Prob(\mathcal{X}|\theta)\Prob(\theta)=0$
+
+% \subsection*{Bayesian learning}
+% $p(X=x|data) = \int p(x, \theta | data) d\theta = \int p(x|\theta)p(\theta|data)d\theta$ \\
+% Estimate gaussian: $X \sim \mathcal{N}(\mu, \sigma^2),$ \\
+% $P(\mu) \sim \mathcal{N}(\mu_0, \sigma_0^2)$ then $\sigma_n^2 = \frac{\sigma^2 \sigma_0^2}{n\sigma_0^2 + \sigma^2},$ $ \mu_n = \frac{n\sigma_0^2}{n\sigma_0^2 + \sigma^2} \hat \mu_n + \frac{\sigma^2}{n\sigma_0^2 + \sigma^2}\mu_0$ with \\
+% $\hat \mu_n = \frac{1}{n}\sum_{i=1}^n x_i$
+% \fi
+
+% \iffalse
+% \subsection*{Bayesian density learning}
+% model: $\theta$;
+% data: $\X$;
+% prior: $\Prob(\theta)$ (known)\\
+% likelihood: $\Prob(\X|\theta)$;
+% posterior:
+% $\Prob(\theta|\X)$\\
+% evidence:
+% $\Prob(\theta)$;
+% $\Prob(\theta|\X)=\frac{\Prob(\X|\theta)\Prob(\theta)}{\Prob(\X)}$
+% %Prior Knowledge of $p(\theta)$,\\
+% %Find Posterior Density: $p(\theta|\mathcal{X})$.\\
+% %$\mathcal{X}^n=\{x_1, \cdots, x_n\}$\\
+% %$p(\theta|\mathcal{X}^n)=\frac{p(x_n|\theta)p(\theta|\mathcal{X}^{n-1})}{\int p(x_n|\theta)p(\theta|\mathcal{X}^{n-1}) d\theta}$
+% % Difficult \& needs prior knowledge. But better against overfitting.
+% \fi
+% \iffalse
+% \subsection*{Frequentist vs Bayesian}
+% Bayes (MAP): allows priors, provides distribution when estimating parameters, requires efficient integration methods when computing posteriors, prior often induces regularization term \\
+% Frequentist method (MLE): does not allow priors, provides a single point when estimating parameters, requires only differentiation methods, MLE estimators are consistent, equivariant, asymptotically normal, asymptotically efficient (for finite samples not necessarily efficient). 
+% \fi
+\iffalse
+\section*{Gradient Descent}
+arbitrary $\w_0 \in \R^d$;
+$\w_{t+1}=\w_t-\eta_t\nabla\hat R(\w_t)$
+$O(n_{\text{iter}} \cdot  n d)$\\
+\textbf{SGD}(mini batch)$\w_{t+1}=\w_t-\eta_t\frac{1}{|\B|}\sum_{i\in \mathbf{B}}\nabla_{\w}l(\w_t;x',y')$
+$O(n_{\text{iter}} \cdot |B| d)$ if $|B|=1\Rightarrow$  \textbf{SGD}, convergence conditions:
+$\sum_t\eta_t=\infty \land\sum_t\eta_t^2<\infty$ E.g. $\eta_t=\frac{1}{t}$
+$\downarrow|B|\Rightarrow \V \uparrow$
+\section*{Risks \& Errors}
+\textbf{Assumption}: data is generated independently and identically distributed (iid) $(\x_i,y_i)\sim P(\X,Y)$\\
+\textbf{Exp. Error (true risk):}
+$R(w)=\E_{\x,y}[(y-\w^T\x)^2]=\int P(\x, y)(y-\w^T\x)^2d\x dy$ \\
+\textbf{Generalization error:}(estimate true risk by empirical risk) \\
+$\hat R_D(w)=\frac{1}{|D|}\sum_{(\x,y)\in D}(y-\w^T\x)^2$\\
+\textbf{law of large numbers:}$\hat R_D(w)\rightarrow_{a.s.} R(w)$ fixed $\w$ as $|D|\rightarrow \infty$\\
+\textbf{Empirical Risk Minimization (ERM):}\\
+$\hat\w_D=\argmin_\w\hat R_D(\w)$ wish to solve $\w^*=\argmin_\w R(\w)$
+need \textit{unif. conv.}:
+$\sup_\w |R(\w)-\hat R_D(\w)|\rightarrow0 \mathrm{as} |D|\rightarrow\infty$
+$\E[\hat R_D(\hat \w_D)]\leq \E_D[R(\hat \w_D)]$\\
+\textbf{better:} split $D$: $D_{train}:=D'$\&$D_{test}:=V$ optimize $\w$ on training set: $\hat \w_{D'}=\argmin_\w\hat R_{D'}(\w)$;
+eval on test set: $\hat R_V(\hat\w_{D'})=\frac{1}{|V|}\sum_{(\x,y)\in V}(y-\w^T\x)^2$ $\Rightarrow \E_{D',V}[\hat R_V(\hat \w_{D'})]=\E_{D'}[R(\hat\w_{D'}]$
+\fi
+
+% \section*{Losses}
+% % \subsection*{Expected Risk}
+% \subsection*{regression:}
+% $=(y-f(x))^2$\\
+% $l_p=|r|^p$ convex for $p\geq1$\\
+% \textbf{0-1} (class):$=\mathbb{I}_{\{{y\neq f(x)}\}}$\\
+% \textbf{exp} (class):$=\exp{(- \w yf(x))}$\\

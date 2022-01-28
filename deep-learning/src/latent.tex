@@ -1,0 +1,48 @@
+\section*{Missing data}
+\subsection*{Mixture modeling}
+
+Model each c. as probability distr. $P(x|\theta_k)$\\
+$P(D|\theta) = \prod_{n=1}^N \sum_{k=1}^K \pi_k P(x_n|\theta_k)$\\
+$L(\theta) = - \sum_{n=1}^N \operatorname{log}  \sum_{k=1}^K \pi_k p_k(x_n| \theta_k)$
+
+\subsection*{Hard-EM algorithm}
+Init: $\theta^{(0)}=(\pi_1,...,\pi_K, \theta_1,...,\theta_K)$ rand.
+\textbf{E-step}: Predict most likely class for each point:
+$z_i^{(t)} = \underset{z}{\operatorname{argmax}} ~ P(z|x_i, \theta^{(t-1)})\\
+= \underset{z}{\operatorname{argmax}} ~ P(z|\theta^{(t-1)}) P(x_i|z,\theta^{(t-1)})$;\\
+\textbf{M-step}: Compute the MLE: $\theta^{(t)} = \underset{\theta}{\operatorname{argmax}} P(D^{(t)}|\theta)$, i.e. $\mu_j^{(t)} = \frac{1}{n_j} \sum_{i: z_i = j x_j}$
+
+\subsection*{Soft-EM algorithm}
+\subsubsection*{E-step} Calc prob for each data point and class:
+$r_{nk}=\E_Q[Z_n]=\gamma_k(x_n)=p(z_n=k|\x_n)=\frac{\pi_kp_k(\x_n|\theta_k)}{\sum_{k=1}^K\pi_kp_k(\x_n|\theta_k)}$;
+$z_n=\argmax_k \gamma_k(x_n)$
+\subsubsection*{M-step} Fit clusters to weighted data points:
+$L(\theta)=\E_Q[p(x,z|\theta)]=\sum_{n=1}^N\sum_{k=1}^Kr_{nk}(\log(\pi_kp_k(\x_n|\theta_k)))$
+$\pi_k = \frac{\sum_{n=1}^N \gamma_k (\x_n)}{N} $; 
+$\mu_k = \frac{\sum_{n=1}^N \gamma_k (\x_n) \x_n}{\sum_{n=1}^N \gamma_k (\x_n)}\\ %\text{|learning with GMMs } ^t = ^*\\
+\sigma_k = \frac{\sum_{n=1}^N \gamma_k(\x_n) (\x_n - \mu_k)^T (\x_n - \mu_k)}{\sum_{n=1}^N \gamma_k(\x_n)}$
+
+ \subsection*{Soft-EM for semi-supervised learning}
+labeled $y_i$: $\gamma_j^{(t)}(x_i) = [j = y_i]$,
+unlabeled:\\ $\gamma_j^{(t)}(x_i) = P(Z=j|x_i, \mu^{(t-1)}, \Sigma^{(t-1)}, w^{(t-1)})$
+\subsection*{Gaussian-Mixture Bayes classifiers}
+Estimate prior $P(y)$; Est. cond. distr. for each class:
+$P(x|y) = \sum_{j=1}^{k_y} w_j^{(y)} \mathcal{N}(x; \mu_j^{(y)}, \Sigma_j^{(y)})$\\
+\subsection*{Examples}
+\subsubsection*{k binary variables $X_1,..,X_K$}
+$P(X_i=1|Y=y)=\theta_{i|y}$;$P(Y=y)=\theta_y$
+$p(\x_i,y_i;\theta)=\theta_{y_i}\prod_{k=1}^K\theta_{k|y_i}^{x_{i,k}}(1-\theta_{k|y_i})^{1-x_{i,k}}$
+
+\subsubsection*{1D Laplacian}
+$\argmax_{\mu_k}-\sum_{n=1}^N\frac{\gamma_k(x_n)}{\beta_k}|x_n-\mu_k|$; 1D-conv opt problem, function p.w. linear,
+breaking points: $D=x_1,x_2,...,x_n$$\Rightarrow$ optimum$\in D \Rightarrow \mu_k=x_n$ with largest obj. value.
+% \subsection*{Log-likelihood}
+% $l(\theta) = log P(\mathcal{D})$ \\
+% $=\sum_{\overset{i=1}{y_i=\times}}^n log P(x_i;\theta) + \sum_{\overset{i=1}{y_i\not=\times}}^n log P(x_i,y_i;\theta)$\\
+% $=\sum_{\overset{i=1}{y_i=\times}}^n log \sum_{i=1}^m P(x_i, Y=j;\theta) +$\\
+% $ \sum_{\overset{i=1}{y_i\not=\times}}^n log P(x_i,y_i;\theta)$\\
+% $=\sum_{\overset{i=1}{y_i=\times}}^n log \sum_{i=1}^m P(x_i|Y=j;\theta)P(Y=j|\theta) +$\\
+% $ \sum_{\overset{i=1}{y_i\not=\times}}^n log P(x_i,y_i;\theta)$
+
+\subsection*{Latent variable}
+We denote the latent variable indicating the component the point is sampled from by $Z$, which takes on values in $\{1,...,K\}$.

@@ -1,0 +1,110 @@
+\section*{Classification}
+% $w^* = \underset{w}{\operatorname{argmin}} ~ l(w;x_i,y_i)$
+\subsection*{Metrics $n = n_+ + n_- = p_+ + p_-$}
+$n_+ = \text{TP} + \text{FN}$, $n_- = \text{TN} + \text{FP}$, $p_+ = \text{TP} + \text{FP}$, $p_- = \text{FN} + \text{TN}$
+Accuracy: $\frac{\text{TP}+\text{TN}}{n}$; \\
+Precision: $\frac{\text{TP}}{\text{TP}+\text{FP}}$
+Recall/TPR: $\frac{\text{TP}}{n_+}$; \\
+FPR: $ \frac{\text{FP}}{n_-}$;
+F1:$\frac{2TP}{2TP+FP+FN}=\frac{2}{\frac{1}{\text{Precision}}+\frac{1}{\text{Recall}}}$\\
+ROC Curve: $y = $TPR, $x = $FPR; $A1 \succ A2$ in ROC $\Leftrightarrow A1 \succ A2$ in precision/recall curve
+% $F_1=2\frac{\text{pre}*\text{rec}}{\text{pre}+\text{rec}}$\\
+\subsection*{Loss}
+$l_{0/1}(\w;\x_i,y_i)=1:\; \text{if}\;y_i\neq \text{sign}(\w^T\x_i), 0:\text{else}$\\
+$l_{P}(\w;\x_i,y_i)=\max(0,-y_i\w^Tx_i)$, conv.surrogate for $l_{0/1}$;\\
+$l_{H}(\w;\x_i,y_i)=\max(0,1-y_i\w^T\x_i)$
+\subsection*{Perceptron}
+SGD on $l_P$ with $\eta=1$;
+$\nabla_w l_P(w;y_i,x_i) = 
+\begin{cases}
+    0 &\text{if } y_i w^T x_i \geq 0\\
+    -y_i x_i &\text{otherwise}
+\end{cases}$ \\
+% \subsection*{Linear Classifier}
+% % optimal for Gaussian with equal cov. Stat. simplicity \& comput. efficiency.
+% $g(x)=a^T\tilde{x}\quad a=(w_0,w)^T, \tilde{x}=(1,x)^T$\\
+% $a^T\tilde{x}_i>0 \Rightarrow y_i=1, a^T\tilde{x}_i<0 \Rightarrow y_i=2$\\
+% Normalization: $\tilde{x}_i\rightarrow-\tilde{x}_i$ if $y_i=2$
+% Find $a$: $a^T\tilde{x}_i>0,\forall i$
+
+% \subsection*{Perceptron Criterion}
+% $J_P(a)=\sum_{\tilde{x}\in\mathcal{X}^\text{msc}}(-a^T\tilde{x})$,\\
+% $\mathcal{X}^\text{msc}$: set of misclassified samples.\\
+% $\Rightarrow a(k+1)=a(k)+\eta(k) \sum_{\tilde{x}\in\mathcal{X}^\text{msc}} \tilde{x}$\\
+% Converges if data separable.\\
+% Single sample perceptron: $(k++)\mod n$\\
+% $a(k+1)=a(k)+\tilde{x}^k$ (misclassified).
+
+%\subsection*{Fisher's Linear Discriminant Analysis}
+%Maximize distance of the means of the projected classes to find projection plane separating them best.\\
+%proj mean: $\tilde{m}_{\alpha}{=}\frac{1}{n_{\alpha}}\sum_{x\in\mathcal{X}_{\alpha}}w^Tx{=}w^Tm_{\alpha}$\\
+%Dist of proj means: $|w^T(m_1-m_2)|$
+%Classes proj. cov: $\tilde{\Sigma}_1{+}\tilde{\Sigma}_2{=}w^T(\Sigma_1{+}\Sigma_2)w$\\
+%Fishers Criterion:\\
+%$J(w)=\frac{||m_1-m_2||^2}{\tilde{\Sigma}_1{+}\tilde{\Sigma}_2}=\frac{w^T(m_1-m_2)(m_1-m_2)^Tw}{w^T(\Sigma_1{+}\Sigma_2)w}$
+%Fishers Crit for Multiple Classes:\\
+%$J(W)=\frac{|W^T\Sigma_BW|}{W^T\Sigma_WW}$\\
+%$\Sigma_B=\sum_{i=1}^kn_k(m_k-m)(m_k-m)^T$\\
+%$\Sigma_W=\sum_{i=1}^k\sum_{x\in \mathcal{D}_i}(x-m_i)(x-m_i)^T$
+
+% \textbf{LDA for Multiclasses}: 
+% Reformulate as $(k-1)$ ``class $\alpha$ - not class $\alpha$'' dichotomies. But some area are ambiguous
+
+\subsection*{Support Vector Machine (SVM)}
+$\nabla_w l_H(w;y,x) = 
+\begin{cases}
+    0 &\text{if } y_i w^T x_i \geq 1\\
+    -y_i x_i &\text{otherwise}
+\end{cases}$\\
+$w^* = \argmin_\w ~\frac{1}{n}\sum_{i=1}^nl_H(w;x_i,y_i)+\lambda||w||_2^2$\\ For L1-SVM (feature selection) use $||w||_1$ 
+save learning rate: $\eta_t=\frac{1}{\lambda t}$
+% Generalize Perceptron with margin $m$ and kernel. Find plane that $\max  m$ s.t.:\\
+% $z_ig(\mathbf{y})=z_i(\mathbf{w}^T\mathbf{y}+w_0)\geq m,\forall \mathbf{y}_i \in \mathcal{Y}$\\
+% $z_i \in \{-1,+1\}\quad \mathbf{y_i} = \phi(\mathbf{x_i})$\\
+% \textbf{Support Vectors:} $\mathbf{y}_i$ with $z_ig(\mathbf{y}_i)=m$
+% Functional Margin Problem:\\
+% minimizes $||\mathbf{w}||$ for $m{=}1$: 
+% $L(\mathbf{w}, w_0, \mathbf{\alpha}) {=}$\\
+% $=\frac{1}{2}\mathbf{w}^T\mathbf{w}{-}\sum_{i=1}^n\alpha_i[z_i(\mathbf{w}^T\mathbf{y}_i{}+w_0){-}1]$\\
+% where $\alpha_i$ are Lagrange multipliers.
+% $\frac{\partial L}{\partial w} {=} 0$\\ $\frac{\partial L}{\partial w_0} {=} 0 \Rightarrow \mathbf{w}=\sum_{i=1}^n\alpha_iz_i\mathbf{y_i} \quad 0=\sum_{i=1}^n\alpha_iz_i$\\
+% %Replacing these in $L(\mathbf{w}, w_0, \mathbf{\alpha})$ we get\\
+% $\tilde{L}(\mathbf{\alpha}){=}\sum_{i=1}^n\alpha_i{-}\frac{1}{2}\sum_{i,j=1}^n\alpha_i\alpha_jz_iz_j\mathbf{y_i}^T\mathbf{y_j}$
+% max
+% with$\alpha_i\geq0\quad$  $\quad\sum_{i=1}^n\alpha_iz_i=0$; Dual\\
+% optimal hyperplane:
+% $\mathbf{w^*}=\sum_{i=1}^n\alpha_i^*z_i\mathbf{y_i}$\\
+% $ w_0^*{=}{-}\frac{1}{2}(\mathrm{min}_{z_i=1}\mathbf{w^*}^T\mathbf{y_i}{+}\mathrm{max}_{z_i=-1}\mathbf{w^*}^T\mathbf{y_i})$\\
+% Only Support Vectors ($\alpha_i\not=0$) contribute to the evaluation.\\
+% Optimal Margin: $\mathbf{w}^T\mathbf{w}=\sum_{i\in SV}\alpha_i^*$\\
+% Discrim.: $g^*(\mathbf{y}){=}\sum_{i\in SV}z_i\alpha_i\mathbf{y_i}^T\mathbf{y}{+}w^*_0$\\
+% $\mathrm{class} = \mathrm{sign(\mathbf{y}^T\mathbf{w}^*+w_0^*)}$
+
+% \subsection*{Soft Margin SVM}
+% Introduce slack to relax constraints\\
+% $z_i(\mathbf{w}^T\mathbf{y}_i+w_0)\geq m(1-\xi_i)$; $\xi_i \geq 0$\\
+% $L(\mathbf{w}, w_0,\mathbf{\xi}, \mathbf{\alpha}, \mathbf{\beta}) {=}\frac{1}{2}\mathbf{w}^T\mathbf{w}+C\sum_{i=1}^n\xi_i-$\\
+% ${-}\sum_{i=1}^n\alpha_i[z_i(\mathbf{w}^T\mathbf{y}_i{+}w_0){-}1{+}\xi_i]$\\
+% ${-}\sum_{i=1}^n\beta_i\xi_i$; $\, \frac{\partial L}{\partial\xi_i}= C-\alpha_i-\beta_i=0$\\
+% $C\downarrow\Rightarrow m\downarrow\wedge\mathrm{constrain}\, \mathrm{violation}\downarrow$ \\
+% Dual constraints:
+% $C \geq \alpha_i \geq 0$
+
+% \subsection*{Non-Linear SVM}
+% Use kernel in discriminant funct: $g(\mathbf{x})=\sum_{i,j=1}^n\alpha_i\alpha_jz_iz_jK(\mathbf{x_i},\mathbf{x})$\\
+% E.g solve the XOR Problem with:
+% $K(x,y)=(1+x_1y_1+x_2y_2)^2$
+
+% \subsection*{Multiclass SVM}
+% $\forall$class $z\in\{1,2,\cdots,M\}$ introduce $\mathbf{w}_z$ and define the margin $m$ s.t.:  $\min_{\mathbf{w_z}}\frac{1}{2}\sum_{z=1}^M\mathbf{w}_z^T\mathbf{w}_z$\\
+% $(\mathbf{w}_{z_i}^T\mathbf{y}_i+w_{z_i,0})-\max_{z\not=Z_i}(\mathbf{w}_z^T\mathbf{y}_i+w_{z,0})\geq m, \forall{\mathbf{y}_i\in \mathcal{Y}}$
+
+% \subsection*{Structured SVM}
+% Each sample $\mathbf{y}$ is assigned to a structured output label $z$\\
+% Output Space Representation:\\
+% joint feature map: $\mathbf{\psi}(z,\mathbf{y})$\\
+% Scoring function: $f_{\mathbf{w}}(z,\mathbf{y})=\mathbf{w}^T\mathbf{\psi(z, \mathbf{y})}$\\
+% Classify: $\hat{z}=h(\mathbf{y})\argmax_{z\in\mathcal{K}}f_{\mathbf{w}(z, \mathbf{y})}$
+\subsection*{Multi class}
+$l_{MC-H}(w^{(1)},...,w^{(c)};x,y) =
+\max (0,1+\max_{j\in\{1,\cdots,y-1,y+1,\cdots,c\}} w^{(j)T} x - w^{(y)T} x)$

@@ -1,0 +1,134 @@
+\documentclass[11pt,landscape,a4paper]{article}
+\newcommand\hmmax{0}
+\newcommand\bmmax{0}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage[x11names]{xcolor}
+\usepackage{todonotes}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows,fit,calc,graphs,graphs.standard}
+
+%fonts:
+%\usepackage[nosf]{kpfonts}
+\usepackage[t1]{sourcesanspro}
+
+
+%\usepackage[lf]{MyriadPro}
+%\usepackage[lf,minionint]{MinionPro}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage[landscape,paper=a4paper,margin=0.25cm]{geometry}
+% \usepackage[top=0mm,bottom=4mm,left=0mm,right=1mm]{geometry}
+% \usepackage[framemethod=tikz]{mdframed}
+%\usepackage{microtype}
+%\usepackage{mathptmx}
+%\usepackage{cm}
+\usepackage{amssymb}
+\usepackage{dsfont}
+
+% Custom for mapto with text on top
+\usepackage{stmaryrd}
+
+\usepackage{paralist}
+\usepackage[framemethod=tikz]{mdframed}
+\input{src/commands.tex}
+
+
+\thinmuskip=1mu
+\medmuskip=1mu %plus 2mu minus 4mu
+\thickmuskip=1mu
+\let\bar\overline
+
+%\definecolor{mygrey}{cmyk}{0,0,0,0.8}
+\definecolor{mathColor}{cmyk}{0,0,0,0.9}
+
+\definecolor{sectionColor}{HTML}{4B0082}
+\definecolor{subsectionColor}{HTML}{3364FF}
+
+\DeclareMathOperator{\di}{d\!}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{}{n}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\everymath\expandafter{\the\everymath \color{mathColor}}
+\everydisplay\expandafter{\the\everydisplay \color{mathColor}}
+
+\renewcommand{\baselinestretch}{.75}
+\pagestyle{empty}
+
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {.2ex}%
+                                {.2ex}%x
+                                {\color{sectionColor}\sffamily\small\bfseries}}
+%Firebrick1
+\renewcommand{\subsection}{\@startsection{subsection}{1}{0mm}%
+                                {.2ex}%
+                                {.2ex}%x
+                                {\color{subsectionColor}\sffamily\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{1}{0mm}%
+                                {0ex}%
+                                {0.1ex}%x
+                                {\sffamily\bfseries}}
+% \usepackage{titlesec}
+% \titlespacing*{\subsubsection}{0pt}{-2pt}{-6pt}
+
+
+\makeatother
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{5pt}
+
+\begin{document}
+\small
+\begin{multicols*}{4}
+\fontdimen2\font=0.3ex
+\input{src/basics}
+\input{src/chapter2}
+\input{src/chapter3}
+\input{src/chapter4}
+\input{src/chapter5}
+\input{src/chapter6}
+\input{src/chapter7}
+\input{src/chapter8}
+\input{src/chapter9}
+\input{src/chapter10}
+\input{src/chapter11}
+\input{src/chapter12}
+\input{src/chapter13}
+\input{src/chapter14}
+\input{src/chapter15}
+\input{src/chapter16}
+\input{src/chapter17}
+\input{src/chapter18}
+\input{src/chapter19}
+
+
+% TODO commented this out because there were errors
+%\input{src/basics.tex}
+%\input{src/linearRegression.tex}
+%\input{src/modelSelection.tex}
+%\input{src/classification.tex}
+%\input{src/featureSelection.tex}
+%\input{src/kernels.tex}
+
+% TODO commented this out because there were errors
+%\input{src/visNeuralNetworks.tex}
+%\input{src/visClustering.tex}
+%\input{src/visDimensionalityReduction.tex}
+%\input{src/visProbabilityModeling.tex}
+%\input{src/visDecisionTheory.tex}
+%\input{src/visGenerative.tex}
+
+% TODO commented this out because there were errors
+%\input{src/latent.tex}
+
+% \input{src/additional.tex}
+\end{multicols*}
+\end{document}

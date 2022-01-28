@@ -1,0 +1,17 @@
+\section*{Clustering}
+\subsection*{k-mean}
+
+$\hat{R}(\mu) = \sum_{i=1}^n \underset{j\in\{1,...k\}}{\operatorname{min}}||x_i-\mu_j||_2^2$\\
+$\hat{\mu} =  \argmin_{\mu} ~ \hat{R}(\mu)$;non-convex, NP-hard \\
+\subsubsection*{Algorithm (Lloyd's heuristic)}
+Init: $\mu^{(0)}$; while not converged:\\
+$z_i^{(t)}=\argmin_{j \in \{1,...,k\}}||\x_i-\mu_j^{(t-1)}||_2^2$;
+$\mu_j^{(t)}=\frac{1}{|\{i:z_i^{(t)}=j\}|}\sum_{i:z_i^{(t)}=j}x_i$; $O(nkd)$per iter
+% Choose starting centers, assign points to closest center, update centers to mean of each cluster, repeat
+
+%\subsection*{k-mean++}
+%- Start with random data point as center\\
+%- Add centers 2 to k randomly, proportionally to squared distance to closest selected center\\
+%for $j=2$ to $k$:
+%$i_j$ sampled with prob.\\
+%$P(i_j=i) = \frac{1}{z} \underset{1\leq l<j}{min}||x_i-\mu_l||_2^2$; $\mu_j \leftarrow x_{i_j}$

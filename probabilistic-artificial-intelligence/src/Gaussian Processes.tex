@@ -1,0 +1,85 @@
+\subsection*{Gaussian Processes}
+
+Gaussian distr. over functions $f \sim GP(\mu(x),K(x))$ ($\infty$-d Gaussian). 
+
+Infinite set of RVs $X$ s.t. $\forall A \subseteq X, A = \{ x_1,.., x_m\}$
+it holds \mhl{$Y_A = [Y_{x_1},..,Y_{x_m}] \sim \mathcal{N}(\mu_A, K_{AA})$} where
+
+$K_{AA}^{(ij)} = k(x_i, x_j)$ and $\mu_A^{(i)} = \mu(x_i)$ with covariance (kernel) function $k(\cdot, \cdot)$, mean function $\mu(\cdot)$
+
+\textbf{Cov. (Kernel)} $k$: \; symmetric, PSD, kernel composition rules hold,
+%$k(x,x') = k_1(x,x') + k_2(x,x')$, $k(x,x') = k_1(x,x') \cdot k_2(x,x')$, $k(x,x') = c \cdot k_1(x,x'), c > 0$, $k(x,x') = f(k_1(x,x'))$, $f$: polynomial with coeffs $> 0$ or $f(x) = e^x$,
+stationary: $k(x,x') = k(x - x')$,
+
+isotropic: $k(x,x') = k(||x - x'||_2)$.
+
+\textbf{GP Pred:} \; $p(f|x_{1:m},y_{1:m}) = GP(f; \mu(x), k(x,x'))$, 
+
+observe $y_i = f(x_i) + \epsilon_i$, $\epsilon_i \sim \mathcal{N}(0, \sigma^2)$, \mbox{\fontsize{9}{6}\selectfont $A = \{x_1,..,x_m\}$}.
+
+Common convention: prior mean $\mu(x) = 0$
+
+Then \mhl{$p(f | x_{1:m}, y_{1:m}) = GP(f; \mu', k')$} where
+
+\mhl{$\mu'(x) = \mu(x) + \mathbf{k}_{x,A} (\mathbf{K}_{AA} + \sigma^2 \mathbf{I})^{-1} (\mathbf{y}_A - \mu_A)$} \\
+\mhl{$k'(x,x') = k(x, x') - \mathbf{k}_{x,A} (\mathbf{K}_{AA} + \sigma^{2} \mathbf{I})^{-1} \mathbf{k}_{x',A}^T$}
+
+$k_{x,A} = [k(x, x_1),..., k(x, x_m)]$
+
+\textbf{Pred posterior:} \; $p(y^* | x_{1:m}, y_{1:m},x^*) = \mathcal{N}(\mu_y^*, {\sigma_y^2}^*)$, $\mu_y^* = \mu'(x^*)$, \; ${\sigma_y^2}^* = \sigma^2 + k'(x^*, x^*)$
+
+\textbf{Forward sampling GP:} \; Chain rule on $P(f_1,..,f_n)$, iteratively sample univariate Gauss
+
+\textbf{Model selection:} \; max. marginal likelihood
+
+$\hat{\theta} = amax_\theta p(y | X, \theta) = amax_\theta \int p(y | X,f) p(f | \theta) df$
+
+%\textbf{Model selection:} optimize marginal likelihood $p(y | X, \theta) = \int p(y | X,f) p(f | \theta) df$:
+
+%$\hat{\theta} = amin_{\theta} -\log p(y | X, \theta) = amin_{\theta} \textcolor{red}{y^T K_y(\theta)^{-1} y +}$
+
+%$\textcolor{red}{\log |K_y(\theta)|}$ $\rightarrow$ use GD $\theta^{t+1} \leftarrow \theta^t - \eta_t \nabla \textcolor{red}{L(\theta)}$
+
+\textbf{Fast GPs}: GP prediction has cost $\mathcal{O}(|A|^3)$
+
+1) \; Local: distance decaying kernel (e.g. RBF), only condition on points $x'$ where $|k(x,x')| \geq \tau$
+
+2) \; $k$ low-d approx: $k(x,x') \approx \phi(x)^T \phi(x')$, then BLR
+
+3) \; RFF: Stationary kernel has FT: \; \mhl{$k(x,x')$} 
+
+$= \int_{\mathbb{R}^d} p(\omega) e^{j \omega^T (x - x')} d\omega = \mathbb{E}_{\omega, b}[z_{w,b}(x) z_{w,b}(x')]$ 
+
+\mhl{$\approx \frac{1}{m} \sum_i z_{w^{(i)},b^{(i)}}(x) z_{w^{(i)},b^{(i)}}(x')$},
+
+$\omega \sim p(\omega), b \sim \mathcal{U}[0, 2\pi], z_{\omega, b}(x) = \sqrt{2} \cos(\omega^T x + b)$
+
+%$\rightarrow$ draw finitely many samples $\omega_i, b_i$
+
+$\rightarrow$ $k(x,x') \approx \phi(x)^T \phi(x')$ ($\phi_i(x) = \frac{1}{\sqrt{m}} z_{w^{(i)},b^{(i)}}(x)$)
+
+4) \; \textbf{Inducing Points Methods:} \; Sum. data via
+
+values of $f$ at inducing points $\mathbf{u} = [u_1,..,u_m]$.
+
+$p(f^*, f) = \int p(f^*, f, u) du = \int p(f^*, f | u) p(u) du$
+
+$p(f^*, f) \approx q(f^*, f) = \int q(f^* | u) q(f | u) p(u) du$
+
+with $p(f | u) = \mathcal{N}(K_{f,u} K_{u,u}^{-1} u, K_{f,f} - Q_{f,f} )$,
+
+$p(f^* | u) = \mathcal{N}(K_{f^*,u} K_{u,u}^{-1} u, K_{f^*, f^*} - Q_{f^*, f^*})$,
+
+and $Q_{a,b} = K_{a,u} K_{u,u}^{-1} K_{u,b}$, $p(\mathbf{u}) \sim \mathcal{N}(0, K_{u,u})$
+
+\textbf{Subset of Regressors:} \; assume $K_{f,f} - Q_{f,f} = 0$,
+
+replace $p(f|u)$ by $q_{\text{\tiny SoR}}(f|u) = \mathcal{N}(K_{f,u} K_{u,u}^{-1} u,0)$
+
+resulting model is degenerate GP with covariance function $k_{SoR}(x,x') = k(x,u) K_{u,u}^{-1} k(u, x')$
+
+\textbf{FITC:} \; Assume $f_i \indep f_j | u, \forall i \neq j$
+
+\vspace*{-1mm}
+$q_{FITC}(f | u) = \mathcal{N}(K_{f,u} K_{u,u}^{-1} u, diag(K_{f,f} - Q_{f,f}))$
+

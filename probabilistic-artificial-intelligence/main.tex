@@ -1,0 +1,143 @@
+\documentclass[11pt,landscape,a4paper,fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows,fit,calc,graphs,graphs.standard}
+\usepackage[nosf]{kpfonts}
+\usepackage[t1]{sourcesanspro}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage[top=0mm,bottom=3mm,left=1mm,right=1mm]{geometry}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{microtype}
+\usepackage{mathtools}
+\usepackage{ccicons}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{amssymb}
+\usepackage[neveradjust]{paralist}
+\usepackage[shortlabels]{enumitem}
+\usepackage{bbm}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{anyfontsize}
+\usepackage{nicefrac}
+\usepackage{scalerel}
+\usepackage{datatool}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{ragged2e}
+\usepackage{blindtext}
+% \usepackage[x11names]{xcolor}
+
+
+% \newcommand\hmmax{0}
+% \newcommand\bmmax{0}
+
+
+%fonts:
+%\usepackage[nosf]{kpfonts}
+
+
+%\usepackage[lf]{MyriadPro}
+%\usepackage[lf,minionint]{MinionPro}
+
+%\usepackage{mathptmx}
+%\usepackage{cm}
+
+
+\usepackage{paralist}
+\usepackage[framemethod=tikz]{mdframed}
+\input{src/commands.tex}
+
+\thinmuskip=1mu
+\medmuskip=1mu %plus 2mu minus 4mu
+\thickmuskip=1mu
+\let\bar\overline
+
+%\definecolor{mygrey}{cmyk}{0,0,0,0.8}
+\definecolor{mathColor}{cmyk}{0,0,0,0.9}
+
+\definecolor{sectionColor}{HTML}{4B0082}
+\definecolor{subsectionColor}{HTML}{3364FF}
+
+\definecolor{myorange}{cmyk}{0,0.5,1,0}
+\definecolor{myorange2}{cmyk}{0,0.8,0.8,0}
+\definecolor{darkgreen}{HTML}{4B0082}
+\definecolor{mypink}{cmyk}{0, 0.7808, 0.4429, 0.1412}
+
+
+% \DeclareMathOperator{\di}{d\!}
+% \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{}{n}
+
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\everymath\expandafter{\the\everymath \color{mathColor}}
+\everydisplay\expandafter{\the\everydisplay \color{mathColor}}
+
+\renewcommand{\baselinestretch}{.75}
+\pagestyle{empty}
+
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {.2ex}%
+                                {.2ex}%x
+                                {\color{sectionColor}\sffamily\small\bfseries}}
+                                
+
+%Firebrick1
+\renewcommand{\subsection}{\@startsection{subsection}{1}{0mm}%
+                                {.2ex}%
+                                {-1ex}%x
+                                {\color{subsectionColor}\sffamily\bfseries}}
+
+% \usepackage{titlesec}
+% \titlespacing*{\subsubsection}{0pt}{-2pt}{-6pt}
+
+
+\makeatother
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{5pt}
+
+\begin{document}
+\small
+\begin{multicols*}{4}
+\fontdimen2\font=0.25ex
+\input{src/Introduction}
+\input{src/Bayesian Linear Regression}
+\input{src/Gaussian Processes}
+\input{src/Variational Inference}
+\input{src/Markov Chain Monte Carlo}
+\input{src/Bayesian Deep Learning}
+\input{src/Active Learning}
+\input{src/Markov Decision Processes}
+\input{src/Reinforcement Learning}
+\input{src/Model-based Deep RL}
+
+% TODO commented this out because there were errors
+%\input{src/basics.tex}
+%\input{src/linearRegression.tex}
+%\input{src/modelSelection.tex}
+%\input{src/classification.tex}
+%\input{src/featureSelection.tex}
+%\input{src/kernels.tex}
+
+% TODO commented this out because there were errors
+%\input{src/visNeuralNetworks.tex}
+%\input{src/visClustering.tex}
+%\input{src/visDimensionalityReduction.tex}
+%\input{src/visProbabilityModeling.tex}
+%\input{src/visDecisionTheory.tex}
+%\input{src/visGenerative.tex}
+
+% TODO commented this out because there were errors
+%\input{src/latent.tex}
+
+% \input{src/additional.tex}
+\end{multicols*}
+\end{document}

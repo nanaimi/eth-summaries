@@ -1,0 +1,39 @@
+% Laplace Approximation
+\subsection*{Laplace Approx}
+$p(w|(x,y)_{1:n}) \approx q_\lambda(\theta) = \mathcal{N}(\hat{\theta}, \Lambda^{-1})$
+
+$\hat{\theta} = \arg\max_\theta p(\theta | y)$, $\Lambda = - \nabla\nabla \log p(\hat{\theta} | y)$
+
+Predict: $p(y^*| x^*, x_{1:n}, y_{1:n}) \approx \int p(y^* | f^*) q(f^*) df^*$,
+
+\vspace*{-1mm}
+with $q(f^*) = \int p(f^* | \theta) q_\lambda(\theta) d\theta$.  LA first greedily fits mode, then matches curvature (over-conf.).
+
+% Variational Inference
+\subsection*{Variational Inf.} \;
+$\textcolor{darkgreen}{p(\theta | y)} = \frac{1}{Z} p(\theta, y) \approx \textcolor{red}{q_\lambda(\theta)}$
+
+$q_{bwd}^* \in \arg\min_{q \in \mathcal{Q}} KL(\textcolor{red}{q} || \textcolor{darkgreen}{p})$: \; $q \approx p$ where q large
+
+$q_{fwd}^* \in \arg\min_{q \in \mathcal{Q}} KL(\textcolor{darkgreen}{p} || \textcolor{red}{q})$: \; $q \approx p$ where p large
+
+\mhl{$amin_q KL(q||p) = amax_q \mathbb{E}_{\theta \sim q}[\log p(\theta, y)] + H(q(\theta))$}
+\mhl{$ = amax_q \mathbb{E}_{\theta \sim q}[\log p(y | \theta)] - KL(q(\theta)||p(\theta))$}
+
+\textbf{ELBO:} \; $L(q) = \mathbb{E}_{\theta \sim q} [\log p(y, \theta)] + H(q) \leq \log p(y)$
+
+\textbf{NOTE:} \; $q( \cdot | \lambda)$ dep. on var. params, ELBO then 
+
+\textbf{ELBO$_{\lambda}$:} \; $ L(\lambda) = \mathbb{E}_{\theta \sim q(\cdot | \lambda)} [\log p(y | \theta)] - KL(q_{\lambda} || p(\cdot))$
+
+ $\rightarrow$ $\nabla_\lambda L(\lambda)$ tricky due to  $\textcolor{red}{\theta \sim q_\lambda(\cdot)}$
+
+\textbf{Reparametrization Trick:} \; Suppose $\epsilon \sim \phi$, 
+
+\vspace*{-1mm}
+$\theta = g(\epsilon, \lambda)$. Then: $q(\theta | \lambda) = \phi(\epsilon) |\nabla_\epsilon g(\epsilon; \lambda)|^{-1}$ (CoV) 
+
+and \mhl{$\mathbb{E}_{\theta \sim q_\lambda}[f(\theta)] = \mathbb{E}_{\epsilon \sim \phi}[f(g(\epsilon; \lambda))]$}, which allows 
+
+\mhl{$\nabla_\lambda \mathbb{E}_{\theta \sim q_\lambda}[f(\theta)] = \mathbb{E}_{\epsilon \sim \phi}[\nabla_\lambda f(g(\epsilon; \lambda))]$}
+

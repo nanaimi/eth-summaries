@@ -1,0 +1,68 @@
+% \subsection*{Markov Decision Processes}
+\subsection*{Probab. Planning}  Control based on prob. model
+
+\textbf{MDP:} A (finite) MDP is defined by
+States $X = \{1,..,n\}$,
+Actions $A = \{1,..,m\}$,
+Transition probabilities $P(x' | x,a)$,
+Reward function $r(x,a)$ (or $r(x,a,x')$),
+discount factor $\gamma \in [0,1]$
+assume that $r$ and $P$ are known
+reward function is a design choice
+
+% Policies and transition probabilities
+\textbf{Planning in (Discounted) MDPs:} \; \mhl{Policy} $\pi: X \rightarrow A$ (det.), $\pi: X \rightarrow P(A)$ (rand.) \mhl{induces a MC} with transition probabilities $P(X_{t+1} = x' | X_t = x) = P(x' | x, \pi(x))$ (det.) or $\sum_a \pi(a | x) P(x' | x, a)$ (rand.)
+
+% Discounted Returns and Value Function as the value of a policy
+\textbf{Value function:} \; Same as Exp. Value $J$ for state $x$ 
+
+{\fontsize{9}{6}\selectfont \mhl{$V^\pi(x)$} $ = J(\pi | X_0 = x)=\mathbb{E}[\sum_{t=0}^{\infty} \gamma^t r(X_t, \pi(X_t)) | X_0 = x]=$} \\ 
+{\fontsize{8.5}{6}\selectfont\mhl{$r(x, \pi (x)) + \gamma \sum_{x'} P(x' | x, \pi(x)) V^\pi(x')$}$\Leftrightarrow$$V^\pi = (I - \gamma T^\pi)^{-1} r^\pi$}, 
+
+$V_i^\pi = V^\pi(i)$, \; $r_i^\pi = r^\pi(i, \pi(i))$, \; $T_{i,j}^\pi = P(j | i,\pi(i))$
+
+\vspace*{-0.5mm}
+\mbox{$V^\pi(x) = \sum_{x'} P(x' | x, \pi(x)) [r(x,\pi(x),x') + \gamma V^\pi(x')]$}
+
+\mhl{$V^\pi(x) = Q^\pi(x, \pi(x))$} (deterministic policy $\pi$)
+
+\mhl{$V^\pi(x) = \mathbb{E}_{a' \sim \pi(x)} Q^\pi(x,a')$} (prob. policy $\pi(x)$)
+
+\textbf{Fixed Point Iter:} 1) init $V_0^\pi$; 2) for $t=1:T$ do: $V_t^\pi = r^\pi + \gamma T^\pi V_{t-1}^\pi$ (converges)
+
+\textbf{Greedy policy w.r.t. $V$:} $V$ induces policy\\
+\mhl{$\pi_V(x) = \arg\max_a r(x,a) + \gamma \sum_{x'} P(x' | x,a) V(x')$}
+
+Optimal policy: $\pi^* = \arg\max_a Q^*(x,a)$ \\
+Every value function induces a policy and v.v.
+
+\textbf{Bellman Equation:} \; {\fontsize{9.5}{6}\selectfont Optimal policy satisfies BE}
+
+\mhl{$V^*(x) = \max_{a \in \mathcal{A}} \big[ r(x,a) + \gamma \sum_{x' \in X} P(x' | x,a) V^*(x') \big]$}
+
+\mhl{$ = \max_{a \in \mathcal{A}} \mathbb{E}_{x'}[r(x,a) + \gamma V^*(x')] = \max_{a \in \mathcal{A}} Q^*(x,a)$}
+
+\textbf{Policy Iteration:} \; 1) Init arbitrary policy $\pi_0$
+
+2) Until converged: \mhl{compute $V^{\pi_t}(x)$; compute}
+\mhl{greedy policy $\pi_t^G$ w.r.t. $V^{\pi_t}$; set $\pi_{t+1} \leftarrow \pi_t^G$}
+
+Stop if $V^{\pi_t}(x) = V^{\pi_{t+1}}(x)$.  PI monotonically improves all values $V^{\pi_{t+1}}(x) \geq V^{\pi_{t}}(x) \forall x$. Finds exact solution in $\mathcal{O}(n^2 m / (1-\gamma))$.
+
+\textbf{Q:} \; \mhl{$Q_t(x,a) = r(x,a) + \gamma \sum_{x'} P(x' | x,a) V_{\textcolor{red}{t-1}}(x')$}
+
+\textbf{Value Iteration:} \; 1) Init $V_0(x) = \max_a r(x,a)$ 2) for $t = 1:\infty$: \mhl{$V_t(x) = \max_a Q_t(x,a)$}. Stop if $||V_t - V_{t-1}||_\infty \leq \epsilon$, then choose greedy $\pi_G$ w.r.t. $V_t$. Finds $\epsilon$-opt solution in poly time.
+
+
+\subsection*{POMDP} is a controlled HMM. Can only obtain noisy obsv. $Y_t$ of hidden state $X_t$. Finite horizon $T$: exp. \#belief states. BUT: most belief states never reached $\rightarrow$ discretize space by sampling.
+
+Use policy gradients with parametric policy.
+
+\textbf{Belief-state MDP:} POMDP as MDP where states $\equiv$ beliefs $P(X_t | y_{1:t})$ in the OG POMDP. 
+
+States {\fontsize{9.5}{6}\selectfont $\mathcal{B} = \{b : \{1,..,n\} \rightarrow [0,1], \sum_{x \in X} b(x) = 1\}$,
+Actions $\mathcal{A} = \{1,..,m\}$, 
+Transitions: $P(Y_{t+1} = y | b_t, a_t) = \sum_{x,x'} b_t(x) P(x' | x, a_t) P(y | x')$;}
+$b_{t+1}(x') = \frac{1}{Z} \sum_x b_t(x) P(X_{t+1} = x' | X_t = x, a_t) P(y_{t+1} | x')$
+
+Reward: \; $r(b_t, a_t) = \sum_x b_t(x) r(x, a_t)$

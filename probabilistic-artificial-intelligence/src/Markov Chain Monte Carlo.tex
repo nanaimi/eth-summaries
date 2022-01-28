@@ -1,0 +1,56 @@
+\subsection*{Markov Chains} 
+A \mhl{stationary MC} is a sequence of RVs $X_1,..,X_N$ with prior $P(X_1)$ and transition probability $P(X_{t+1} | X_t)$ independent of $t$. 
+An \mhl{ergodic MC} if $\exists$ $t < \infty$ s.t. every state is reachable from every state in \textit{exactly} $t$ steps.
+
+\textbf{Markovian Assumption:} \; $X_{t+1} \indep X_{1:t-1} | X_t \, \forall t$
+
+\textbf{Stationary Distribution:} \; A stationary ergodic MC has a unique and positive stationary distr. $\pi(X) > 0$ s.t. \mhl{$\forall x$: $\lim_{N \rightarrow \infty} P(X_N = x) = \pi(x)$} and $\pi(X)$ is independent of prior $P(X_1)$.
+
+Simulate MC via forward sampling (chain rule)
+
+\vspace*{-0.5mm}
+\subsection*{MCMC} Approx pred. distr. \mhl{$p(y^* | x^*, x_{1:n}, y_{1:n}) =$}
+
+\vspace*{-0.5mm}
+$\int \textcolor{darkgreen}{p(y^* | x^*, \theta)} p(\theta | (x,y)_{1:n})d\theta = \mathbb{E}_{\theta \sim p(\cdot | (x,y)_{1:n})}[\textcolor{darkgreen}{f(\theta)}]$
+
+\vspace*{-0.5mm}
+\mhl{$\approx \frac{1}{m} \sum_{i=1}^{m} f(\theta^{(i)})$}, sample $\theta^{(i)} \sim p(\theta | (x,y)_{1:n})$ from MC with stationary distribution $p(\theta| (x,y)_{1:n})$.
+
+\textbf{Hoeffding:} \; ($P(err) \searrow$ exp.) Assume $f \in [0,C]$:
+
+\mbox{\fontsize{9.5}{6}\selectfont $P(|\mathbb{E}_P[f(X)] - \frac{1}{N}\sum_{i=1}^{N} f(x_i)| > \epsilon) \leq 2 exp(-2N\epsilon^2/C^2)$}
+
+Given unnormalized distr. $Q(x) > 0$, design MC s.t. $\pi(x) = \frac{1}{Z} Q(x)$. If MC satisfies \textbf{detailed\\ balance equation (DBE)} $\forall x,x'$:
+
+\vspace*{-0.5mm}
+\mhl{$Q(x)P(x' | x) = Q(x')P(x | x')$} $\implies$ $\pi(x) = \frac{1}{Z} Q(x)$.
+
+\textbf{Gibbs Sampling:} \; Asympt. correct but slow
+
+1. Init $\mathbf{x^{(0)}}$, fix observed RVs $X_B$ to $\mathbf{x_B}$\\
+2. Repeat: set $\mathbf{x}^{(t)} = \mathbf{x}^{(t-1)}$; \textcolor{red}{select} $\textcolor{red}{j \in \{1:m\} \setminus B}$\\
+$x_j^{(t)} \sim P \left(X_j | \mathbf{x}^{(t)}_{\{1:m\} \setminus \{j\}}\right)$ (efficient samples)
+
+\vspace*{-0.5mm}
+\textcolor{red}{Random Order:} \; fulfills DBE, find correct distr.
+
+\textcolor{red}{Determ. Order:} \; not fulfill DBE, still correct distr.
+
+\textbf{Expectations via MCMC:} \; Use MCMC sampler (e.g. GS) to get samples $\mathbf{X}^{(1:T)}$. After burn-in time $t_0$: \;
+\mhl{$\mathbb{E}[f(\mathbf{X}) | \mathbf{x}_b] \approx \frac{1}{T - t_0} \sum_{\tau = t_0 + 1}^{T} f(\mathbf{X}^{(\tau)})$}
+
+\textbf{Metropolis/Hastings:} \; Generate MC s.t. DBE sat.
+
+1) Prop. $R(X' | X)$, $X_t = x$, sample $x' \sim R(X' | X=x)$; 
+2) For $X_t = x$, w.p. \mhl{$\alpha =\min \{ 1, \frac{Q(x')R(x | x')}{Q(x) R(x' | x)}\}$}: $X_{t+1} = x'$; w.p. $1 - \alpha$: $X_{t+1} = x$
+
+% p(x) is log-concave if f is convex
+\vspace*{-0.5mm}
+Cont RV: log-concave $p(x) = \frac{1}{Z} exp(-f(x))$, $f$ cnvx \\
+M/H: \; $\alpha = \min \{ 1, \frac{R(x|x')}{R(x'|x)}exp(f(x) - f(x')\}$
+
+\vspace*{-0.5mm}
+MALA/LMC: \; $R(x' | x) = \mathcal{N}(x'; x - \tau \nabla f(x); 2\tau I)$
+
+$\rightarrow$ Use gradient information for convergence

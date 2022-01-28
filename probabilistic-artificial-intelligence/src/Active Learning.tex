@@ -1,0 +1,52 @@
+\subsection*{Active Learning}
+
+%Collect data that maximally reduces uncertainty.
+\mbox{Pick $x$ max. reduce uncertainty}
+
+\textbf{Mutual Info:} \; \mhl{$I(X;Y) = H(X) - H(X | Y) = I(Y;X)$}
+
+%{\fontsize{9}{0}\selectfont $X \sim N(\mu, \Sigma), Y = X+N(0, \sigma^2 I)$, $I(X;Y) = \frac{1}{2} \ln |I + \sigma^2 \Sigma|$}
+
+\textbf{Information Gain:} utility function $F(S)$, $S \subseteq D$, \mhl{\fontsize{9}{6}\selectfont $F(S) := H(f) - H(f | y_S) = I(f;y_S) = \frac{1}{2} \log |I + \sigma^{-2} K_S|$}
+
+\textbf{Greedy MI optimization:} \; $S_t = \{x_1,.., x_t\}$
+
+$x_{t+1} = \arg\max_{x \in D} F(S_t \cup \{x\}) = $ \mhl{$\arg\max_{x \in D} \sigma_{x | S_t}^2$}
+
+\iffalse
+\vspace*{-1mm}
+$\rightarrow$ constant-factor near optimal.
+\vspace*{-1mm}
+\fi
+
+Uncertainty sampling: \; $x_t = \arg\max_{x \in D} \sigma_{t-1}^2(x)$
+
+Heteroscedastic: \; \mhl{$\arg\max_{x \in D} {\textcolor{red}{\sigma_f^2(x)}}/{\textcolor{darkgreen}{\sigma_n^2(x)}}$}
+
+\vspace*{-0.5mm}
+\textbf{BALD}: \; $x_{t+1} = \arg\max_x I(\theta; y_x | x_{1:t}, y_{1:t}) $\\
+$= \arg\max_x H(y | x, (x,y)_{1:t}) - \mathbb{E}_{\theta \sim p(\cdot | (x,y)_{1:t})}[H(y | x, \theta)]$
+
+\vspace*{-0.5mm}
+\subsection*{Bayesian Optimization} Seq. pick $x_1,..,x_T \in D$, get $y_t = f(x_t) + \epsilon_t$, find $\max_x f(x)$ s.t. $T$ small
+
+\vspace*{-0.5mm}
+\textbf{Cum. Regret:} \; $R_T = \sum_{t=1}^{T} \max_{x \in D} f(x) - f(x_t)$
+
+\textbf{GP-UCB:} \; \mhl{$x_t = \arg\max_{x \in D} \mu_{t-1}(x) + \beta_t \sigma_{t-1}(x)$}
+
+(upper confidence bound $\geq$ best lower bound)
+
+$\mu(x), \sigma(x)$ from GP marginal. $\beta_t$ EE-tradeoff.
+
+Thm: $f \sim GP$, correct $\beta_t$: $\frac{1}{T}R_T = \mathcal{O}^*(\sqrt{\nicefrac{\gamma_T}{T}})$, \\
+$\gamma_T = \max_{|S| \leq T} I(f; y_S)$ (max. information gain)
+
+% Theorem applied to following kernels
+% K: L:$\gamma_T = \mathcal{O}(dlogT)$; Sq-E: $\gamma_T = \mathcal{O}((logT)^{d+1})$; Mat: $\gamma_T = \mathcal{O}(T^{\frac{d}{2 \nu + d}}(logT)^{\frac{2 \nu}{2 \nu +d}})$ 
+
+\textbf{EI:} \; choose $x_t = \arg\max_{x \in D} EI(x)$ where
+
+$EI(x) = \mathbb{E}[(y^* - y)_+] = \int_{-\infty}^{\infty} max(0, y^* - y) p(y | x) dy$
+
+\textbf{Thompson sampling:} \; at $t$, draw from GP post. \mhl{$\tilde{f} \sim P(f | x_{1:t}, y_{1:t})$}, select $x_{t+1} \in \arg\max_{x \in D} \tilde{f}(x)$

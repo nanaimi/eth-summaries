@@ -1,0 +1,148 @@
+% \section*{Introduction}
+\subsection*{Prob. Basics} \;
+\textbf{Normalization}: \; $P(\Omega) = 1$ \\
+\textbf{Non-neg}: \; $\forall A \in \mathcal{F}, P(A) \geq 0$ \;
+\textbf{$\sigma$-add:} \; $\forall A_{1},..., A_{n} \in \mathcal{F}$ 
+
+\textbf{Disjoint}: \; $P \left(\bigcup\limits_{i=1}^{\infty} A_{i} \right) = \sum\limits_{i=1}^{\infty}P(A_{i})$
+
+\textbf{Conditional probability}: \; $P(X|Y)$
+
+\textbf{Prod. Rule}: \; $P(X,Y)=P(X|Y)P(Y)=P(Y|X)P(X)$
+
+\textbf{Chain (Joint Prob.)}: \; $P(X_1, ..., X_n) = P(X_{1:n})$ \\
+$=P(X_1)P(X_2|X_1)P(X_3|X_{1:2})...P(X_n|X_{1:n-1})$
+
+\textbf{Sum (Joint Prob.)}: \; $P(X_{1:n}) = \sum_y P(X_{1:n}, Y=y)$ \\
+\; \; $=\sum_y P(X_{1:n}|Y=y)P(Y=y)$ \\
+\; \; $=\int_y P(X_{1:n}|Y=y)P(Y=y)dy$
+
+\vspace*{-1mm}
+\textbf{Bayes' Rule:} \; $P(X|Y) = \frac{P(X,Y)}{P(Y)} = \frac{P(Y|X)P(X)}{P(Y)}$
+
+\textbf{X, Y indep.:} \; $P(X|Y) = P(X)$, \;$P(X,Y) = P(X) P(Y)$
+
+\textbf{Exp:} \; $\mathbb{E}_x[f(X)] = \int f(x)p(x)dx = \sum_x f(x)p(x)$
+
+\textbf{Lin. Exp:} \; $\mathbb{E}_{x,y}[aX + bY] = a\mathbb{E}_x[X] + b \mathbb{E}_y[Y]$
+
+\textbf{Var:} \; $Var[X] = \mathbb{E}[(X-\mu_X)^2] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$
+
+$Var(X + Y) = Var(X) + Var(Y) + 2Cov(X,Y)$
+
+\textbf{Cov:} \; $Cov(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])]$
+
+\textbf{CoV:} \; $Y = g(X)$, $f_Y(y) = f_X(g^{-1}(y)) \cdot |\frac{d}{dy} g^{-1}(y)|$
+
+\vspace*{-0.5mm}
+\textbf{Gauss:} \; \mbox{\fontsize{8}{6}\selectfont $\mathcal{N} = \left(\nicefrac{1}{\sqrt{(2\pi)^d |\Sigma|}}\right) exp(-\frac{1}{2}(x-\mu)^T\Sigma^{-1} (x-\mu))$}
+
+\vspace*{-0.5mm}
+\textbf{CDF:} \; \mbox{\fontsize{9}{6}\selectfont $\Phi(u;\mu,\sigma^2) = \int_{-\infty}^{u}\mathcal{N}(y;\mu,\sigma^2)dy=\Phi(\frac{u-\mu}{\sqrt{\sigma^2}};0,1)$;}
+
+\vspace*{-0.5mm}
+\textbf{Multivar. Gauss:} \;
+\mbox{\fontsize{8}{6}\selectfont $X_V = [X_1, .., X_d] \sim \mathcal{N}(\mu_V, \Sigma_{VV})$},
+
+index sets \mbox{\fontsize{8}{6}\selectfont $A = \{i_1,..,i_k\}$, $B = \{j_1,..,j_m\}$, $A \cap B = \emptyset$}
+
+\textbf{Marginal:} \; \mhl{$X_A = [X_{i_1},..X_{i_k}] \sim \mathcal{N}(\mu_A, \Sigma_{AA})$} with \\
+\mbox{\fontsize{8.8}{6}\selectfont $\mu_A = [\mu_{i_1},..,\mu_{i_k}]$},
+\mbox{$\Sigma_{AA}^{(m,n)} = \sigma_{i_m,i_n} = \mathbb{E}[(x_{i_m} - \mu_{i_m}) (x_{i_n} - \mu_{i_n})]$}
+
+\textbf{Cond2DisjSets:} \; $P(X_A | X_B = x_B) = \mathcal{N}(\mu_{A|B}, \Sigma_{A|B})$, \\ 
+\mhl{$\mu_{A|B} = \mu_A + \Sigma_{AB} \Sigma_{BB}^{-1} (x_B - \mu_B)$}, \\ 
+\mhl{$\Sigma_{A|B} = \Sigma_{AA} - \Sigma_{AB} \Sigma_{BB}^{-1} \Sigma_{BA}$}
+
+$Y = M X_A, M \in \mathbb{R}^{m \times d}$, \hfill \mhl{$Y \sim \mathcal{N}(M\mu_A, M\Sigma_{AA}M^T)$} \;
+
+$Y = X_A + X_B$, \hfill \mhl{$Y \sim \mathcal{N}(\mu_A + \mu_B, \Sigma_{AA} + \Sigma_{BB})$} \;
+
+%-------------------------------------------------------------------------------------------
+%Calculus and stuff
+%-------------------------------------------------------------------------------------------
+
+%$ln(x) \leq x - 1, x>0$; $||x||_2 = \sqrt{x^T x}$; $\nabla_x ||x||_2^2 = 2 x$%; $||x||_p = (\sum_{i=1}^n|x_i|^p)^{\frac{1}{p}}$, $1 \leq p < \infty$
+
+% KL divergence
+
+\textbf{KL}: \;
+\mhl{$KL(p||q) = \mathbb{E}_p[log\frac{p(x)}{q(x)}] = \sum_{x \in X} p(x) \cdot log \frac{p(x)}{q(x)}$} \\
+\vspace*{-0.5mm}
+\mhl{$= \int p(x) log \frac{p(x)}{q(x)} \, dx \geq 0$}, \; $p=q \rightarrow KL(p||q) = 0$
+
+% Entropy
+\textbf{Entropy}: \; \mhl{{\fontsize{9.5}{6}\selectfont $H(q) = \mathbb{E}_q[-\log q(\theta)] = - \int q(\theta)\log q(\theta) d\theta $}}
+
+\mhl{$=- \sum_\theta q(\theta) \log q(\theta)$}; \;
+$H(\prod q_i(\theta_i)) = \sum_i H(q_i)$; \\
+$H(N(\mu, \Sigma)) = \frac{1}{2}  ln|2\pi e \Sigma|$; $H(p,q) = H(p) + H(q | p)$
+
+$H(S | T) \geq H(S | T, U)$ \textit{'information never hurts'}
+
+\textbf{Orth:} \; A: $A^{-1}=A^T,AA^T=A^TA=||A||_2^2=I$\\
+$det(A)\in\{+1,-1\}, (A^{-1})^T=(A^T)^{-1}, rank(A)=n$
+
+\textbf{Inv:} \; $A^{-1}=
+\big[
+\begin{smallmatrix}
+a&b \\ 
+c&d
+\end{smallmatrix}\big]^{-1}=
+\frac{1}{ad-bc}
+\big[
+\begin{smallmatrix}
+d&-b \\ 
+-c&a
+\end{smallmatrix}\big];
+$
+
+\textbf{Deriv:} \;
+$(fg)' = f'g + fg'$; $(f/g)' = (f'g - fg')/g^2$
+
+$f(g(x))' = f'(g(x))g'(x)$; $\log(x)' = 1/x$
+%$\frac{\partial}{\partial x}b^Tx=\frac{\partial}{\partial x}x^Tb=b,\!
+%\frac{\partial}{\partial x}x^Tx=\frac{\partial}{\partial x}||x||_2^2=2x,\!
+%\frac{\partial}{\partial x}(x^TAx)=(A^T+A)x,$
+%$\frac{\partial}{\partial x}(b^TAx)=A^Tb, \frac{\partial}{\partial X}(c^TXb)=c^Tb,
+%\frac{\partial}{\partial X}(c^TX^Tb)=bc^T$
+
+\iffalse
+\textbf{Eigdec:} \;
+$A,Q \in \mathbb{R}^{n\times n}, A=Q\Lambda Q^{-1},\! \Lambda = diag(\lambda_i)$\\
+$Q=[v_1,..,v_n], \text{(col's are e-vec.)}$
+
+if all $\lambda_i\geq0: A^{-1}=Q\Lambda^{-1}Q^{-1},\Lambda^{-1}=diag(\frac{1}{\lambda_i})$\\
+if $A=A^T\text{(symm.) and }x^TAx\geq0 \forall x \neq 0 \rightarrow psd$
+
+\textbf{SVD:} \;
+$X\in \mathbb{R}^{n\times p}, U\in \mathbb{R}^{n\times n}, S\in \mathbb{R}^{n\times p},
+V\in \mathbb{R}^{p\times p}$\\
+$X=USV^T=\sum_{k=1}^{rank(X)}\sigma_{k,k}u_k (v_k)^T,\!${\tiny{($U^TU=V^TV=I$)}}\\
+$X^TX=VS^TU^TUSV^T=VS^TSV^T=V\Sigma V^T$\\
+$\Sigma = diag(\sigma_1^2,..,\sigma_n^2);\sigma_i^2=\lambda_i; \forall \lambda_i \geq 0$
+\fi
+
+
+
+%CDF: cumulative distribution function; PDF: standard normal probability density function, $\mu = 0$, $\sigma = 1$
+%PDF: $\phi(x) = \frac{1}{\sqrt{2\pi}} e^{-(1/2)x^2}$; $\int \phi(x) \partial x = \Phi(x) + c$;\\
+%$\int x \phi(x) = -\phi(x) + c$; $\int x^2 \phi(x) \partial x = \Phi(x) -x \phi(x) + c$
+
+\textbf{Cnvx:} \; $\text{g(x) convex} \Leftrightarrow x_1,x_2 \in \mathbb{R}, \lambda \in [0,1]: g\text{''}(x) > 0$; \\ 
+\hfill $g(\lambda x_1 + (1-\lambda) x_2) \leq \lambda g(x_1) + (1-\lambda) g(x_2)$
+
+\mhl{\textbf{Jensen ineq.:} \; $g$ convex: $g(E[X]) \leq E[g(X)]$}
+
+\mhl{$g$ concave (e.g. $\log$): $g(E[X]) \geq E[g(X)]$}
+
+\subsection*{Bayesian Learning} \;
+\textbf{Prior:} \; $p(\theta)$;
+
+\textbf{Likelihood:} \; $p(y_{1:n} | x_{1:n}, \theta) = \prod_{i=1}^{n} p(y_i | x_i, \theta)$;
+
+\textbf{Posterior} \; $p(\theta | x_{1:n}, y_{1:n}) = \frac{1}{Z} p(\theta) \prod_{i=1}^{n} p(y_i | x_i, \theta)$;
+
+where $Z = \int p(\theta) \prod_{i=1}^{n} p(y_i | x_i, \theta) d\theta$ (norm. const.);
+
+\textbf{P:} \; $p(y^* | x^*, x_{1:n}, y_{1:n}) = \int p(y^* | x^*, \theta) p(\theta | x_{1:n}, y_{1:n}) d\theta$

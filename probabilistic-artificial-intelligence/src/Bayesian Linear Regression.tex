@@ -1,0 +1,53 @@
+
+\subsection*{Bayesian Lin. Reg.}
+\textbf{Prior:} \; $p(\mathbf{w}) = \mathcal{N}(0, \sigma_w^2 \mathbf{I})$, \\ 
+\textbf{Likelihood:} \; $p(y_i|\mathbf{x_i}, \mathbf{w}, \sigma_n) = \mathcal{N}(y_i; \mathbf{w}^T\mathbf{x_i}, \sigma_n^2)$ \\
+\textbf{Posterior:} \; $p(\mathbf{w} | \mathbf{X, y}) = \mathcal{N}(\mathbf{w}; \overline{\mu}, \overline{\Sigma})$, \\
+\mhl{$\overline{\Sigma} = (\sigma_n^{-2}\mathbf{X}^T\mathbf{X} + \sigma_w^{-2} \mathbf{I})^{-1}$,
+$\overline{\mu} = \sigma_n^{-2} \overline{\Sigma} \mathbf{X}^T\mathbf{y}$}; \\
+$p(f^* | \mathbf{X,y,x^{*}}) = \mathcal{N}(\mathbf{x^*}^T\overline{\mu}, {\mathbf{x}^*}^T \overline{\Sigma} \mathbf{x}^{*})$; \\
+$p(y^* | \mathbf{X,y,x^{*}}) = \mathcal{N}({\mathbf{x}^{*}}^T \overline{\mu}, \textcolor{red}{{\mathbf{x}^{*}}^T \overline{\Sigma} \mathbf{x}^*} + \textcolor{orange}{\sigma_n^2})$
+
+\textcolor{red}{\textbf{Epistemic}}: uncertainty about model due to lack of data. \; \textcolor{orange}{\textbf{Aleatoric:}} Irreducible noise
+
+\textbf{Recursive updates:} \\ $\mathbf{X}_{t+1}^T \mathbf{X}_{t+1} = \mathbf{X}_{t}^T \mathbf{X}_{t} + x_{t+1} x_{t+1}^T$
+
+$\mathbf{X}_{t+1}^T y_{t+1} = \mathbf{X}_{t}^T y_{t} + y_{t+1} x_{t+1}$
+
+\textbf{Parallel to Ridge Reg.: } \;
+$f(x,w) = y \approx \mathbf{w}^\top \mathbf{x}$ \\ 
+$\hat{w} = \arg\min_{w}\sum_{i=1}^{n}(y_i - w^\top x_i)^2 + \lambda \|w\|_2^2$ \\ 
+$= (X^{\top} X + \lambda I)^{-1}X^{\top} y \rightarrow$ MAP Bayesian inf. w/\\
+$p(w) = N(0, \sigma_p^2 I)$ and $\epsilon_i \sim N(0, \sigma_n^2)$, then $\lambda = \nicefrac{\sigma_n^2}{\sigma_p^2}$ \\
+$f^{*} = \mathbf{w}^T\mathbf{x}^{*}$, $y^{*} = f^{*} + \epsilon$, $\epsilon \sim \mathcal{N}(0, \sigma_y^2)$
+
+\vspace*{-0.8mm}
+\subsection*{BLogR:} \; $p(y_i | x_i, \theta) = \sigma(y_i w^T x_i)$, \; $\sigma(a) = \frac{1}{1 + e^{-a}}$
+
+\subsection*{Kalman Fil:} $X_{t+1} \bot X_{1:t-1} | X_t, Y_t \bot Y_{1:t-1}, X_{1:t-1} | X_t$,
+
+State $X_t$, Observation $Y_t$, Prior $P(X_1)  \sim \mathcal{N}(\mu, \Sigma)$
+
+Motion model: $P(\mathbf{X}_{t+1} | \mathbf{X}_t) = \mathcal{N}(x_{t+1}; \mathbf{F} X_t, \Sigma_x)$, \mhl{$\mathbf{X}_{t+1} = \mathbf{F} \mathbf{X}_{t} + \epsilon_t$, $\epsilon_t \sim \mathcal{N}(0, \Sigma_x)$}
+
+Sensor model: \hfill $P(\mathbf{Y}_t | \mathbf{X}_t) = \mathcal{N}(y_t; H X_t, \Sigma_y)$, \mhl{$\mathbf{Y}_t = \mathbf{H} \mathbf{X}_t + \eta_t$, $\eta_t \sim \mathcal{N}(0, \Sigma_y)$}
+
+\textbf{Kalman Gain:} \;
+\mhl{$\mathbf{K}_{t+1} = ( \mathbf{F} \Sigma_t \mathbf{F}^T + \Sigma_x ) \cdot $}\\ 
+\mhl{$\cdot \mathbf{H}^T ( \mathbf{H} (\mathbf{F} \Sigma_t \mathbf{F}^T + \Sigma_x ) \mathbf{H}^T + \Sigma_y )^{-1}$}
+
+\textbf{Kalman Update:} \\
+$\mu_{t+1} = \mathbf{F} \mu_t + \mathbf{K}_{t+1} (\mathbf{y}_{t+1} - \mathbf{H} \mathbf{F} \mu_t)$
+
+$\Sigma_{t+1} = (\mathbf{I} - \mathbf{K}_{t+1} \mathbf{H}) (\mathbf{F} \Sigma_t \mathbf{F}^T + \Sigma_x)$
+
+\textbf{Bayesian Filtering in KFs} \\
+Keep track of state $X_t$ using rec. formula. \\
+Start $P(X_1) = \mathcal{N}(\mu, \Sigma)$. \\
+At time $t$: assume we have $P(X_t | y_{1:t-1})$
+
+\textbf{Conditioning:} \; \mhl{$P(X_t | y_{1:t}) = \frac{1}{Z} P(y_t | X_t) P(X_t | y_{1:t-1})$}
+
+\textbf{Prediction:} \;\mhl{$P(X_{t+1} | y_{1:t}) = \int \hspace*{-1mm} P(X_{t+1} | x_t) P(x_t | y_{1:t}) dx_t$}
+
+\vspace*{-0.5mm}
